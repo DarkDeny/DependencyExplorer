@@ -1,0 +1,79 @@
+﻿<Window x:Class="DependencyExplorer.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:DependencyExplorer.Helpers"
+        xmlns:viewModel="clr-namespace:DependencyExplorer.ViewModel"
+        Title="MainWindow" Height="350" Width="525">
+    
+    <Window.DataContext>
+        <viewModel:DependencyViewModel />
+    </Window.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Margin="5" Grid.Column="0" Command="{Binding SelectFileCommand}" Content="Select an assembly to analyze" />
+            <TextBox Margin="5" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedFile}" />
+            <Button Margin="5" Grid.Column="2" Command="{Binding StartAnalyzeCommand}" Content="Start analyze" />
+        </Grid>
+
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TreeView x:Name="AssemblyTree" Grid.Column="0" ItemsSource="{Binding Assemblies}">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter 
+                            Property="helpers:TreeViewItemBehavior.IsBroughtIntoViewWhenSelected" 
+                            Value="True" 
+                            />
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+            
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding References}">
+                        <TextBlock Foreground="{Binding ColorState}" Text="{Binding Name}"/>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            
+            <ListBox Grid.Column="1" ItemsSource="{Binding AnalyzedAssemblies}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Foreground="{Binding ColorState}" Text="{Binding Name}">
+                                <TextBlock.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Show in tree" Command="{Binding ShowInTreeCommand}"></MenuItem>
+                                    </ContextMenu>
+                                </TextBlock.ContextMenu>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Grid>
+    </Grid>
+</Window>
