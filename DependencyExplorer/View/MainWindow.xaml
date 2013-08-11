@@ -3,28 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:DependencyExplorer.Helpers"
         xmlns:viewModel="clr-namespace:DependencyExplorer.ViewModel"
-        Title="MainWindow" Height="350" Width="525">
+        Title="{Binding Title}" Height="450" Width="750">
     
     <Window.DataContext>
         <viewModel:DependencyViewModel />
     </Window.DataContext>
     
+    <Window.Resources>
+        <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Padding" Value="3" />
+        </Style>
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"></Style>
+        <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource BaseStyle}"></Style>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}"></Style>
+        <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource BaseStyle}"></Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="13"></Setter>
+            <Setter Property="Padding" Value="15,1"></Setter>
+        </Style>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Margin="5" Grid.Column="0" Command="{Binding SelectFileCommand}" Content="Select an assembly to analyze" />
-            <TextBox Margin="5" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedFile}" />
-            <Button Margin="5" Grid.Column="2" Command="{Binding StartAnalyzeCommand}" Content="Start analyze" />
+            <Button Margin="5" Grid.Column="1" Command="{Binding SelectFileCommand}" Content="Select an assembly to analyze" />
+            <TextBox Margin="5" Grid.Column="0" IsReadOnly="True" Text="{Binding SelectedFile}" />
         </Grid>
 
         <Grid Grid.Row="1" >
@@ -43,11 +57,7 @@
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                         <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                         <Setter Property="FontWeight" Value="Normal" />
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="FontWeight" Value="Bold" />
-                            </Trigger>
-                        </Style.Triggers>
+
                     </Style>
                 </TreeView.ItemContainerStyle>
             
@@ -56,6 +66,10 @@
                         <TextBlock Foreground="{Binding ColorState}" Text="{Binding Name}"/>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
+                
+                <TreeView.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#b0d8ff"/>
+                </TreeView.Resources>
             </TreeView>
             
             <ListBox Grid.Column="1" ItemsSource="{Binding AnalyzedAssemblies}">
@@ -65,15 +79,25 @@
                             <TextBlock Foreground="{Binding ColorState}" Text="{Binding Name}">
                                 <TextBlock.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Header="Show in tree" Command="{Binding ShowInTreeCommand}"></MenuItem>
+                                        <MenuItem Header="Show in tree" Command="{Binding ShowInTreeCommand}"/>
                                     </ContextMenu>
                                 </TextBlock.ContextMenu>
                             </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+
+                <ListBox.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#b0d8ff"/>
+                </ListBox.Resources>
             </ListBox>
 
         </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Vertical">
+            <TextBlock>Legend: </TextBlock>
+            <TextBlock Foreground="Green">Green assembly name - assembly was found in the same folder as source</TextBlock>
+            <TextBlock Foreground="Red">Red assembly name - it was not found.</TextBlock>
+        </StackPanel>
     </Grid>
 </Window>

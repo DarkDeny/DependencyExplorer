@@ -50,25 +50,18 @@ namespace DependencyExplorer.ViewModel
                     {
                         var dialog = new Microsoft.Win32.OpenFileDialog();
                         var result = dialog.ShowDialog();
-                        if (result == true)
+                        if (true == result)
                         {
                             SelectedFile = dialog.FileName;
+                            Analyze();
                         }
                     });
             }
         }
 
-        public ICommand StartAnalyzeCommand
-        {
-            get
-            {
-                return new DelegateCommand( p => true, Analyze);
-            }
-        }
-
         public ObservableCollection<AssemblyTreeItemViewModel> Assemblies { get; private set; }
 
-        public IList<AssemblyTreeItemViewModel> AnalyzedAssemblies
+        public IEnumerable<AssemblyTreeItemViewModel> AnalyzedAssemblies
         {
             get
             {
@@ -77,6 +70,14 @@ namespace DependencyExplorer.ViewModel
                 list.AddRange(_notFoundAssemblies);
 
                 return list.OrderBy(asm => asm.Name).ToList();
+            }
+        }
+
+        public string Title
+        {
+            get
+            {
+                return String.Format("{0} v.{1}", App.Name, App.Version);
             }
         }
 
