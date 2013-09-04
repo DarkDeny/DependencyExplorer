@@ -14,14 +14,18 @@ namespace DependencyExplorer.ViewModel
 {
     public class DependencyViewModel : ViewModelBase
     {
-        // TODO: make tree filterable by selected item in the left list 
-        // TODO: save results of analysis, so that user can make diffs between versions of solution
-        // TODO: set background of selected item to b0d8ff or afd7ff or d6d6d6
-        // TODO: make analyze run in background with status messages on how many assemblies processed
         public DependencyViewModel()
+            : this(new UIWindowDialogService())
         {
             Assemblies = new ObservableCollection<AssemblyTreeItemViewModel>();
         }
+
+        public DependencyViewModel(IUIWindowDialogService anUIService)
+        {
+            UIService = anUIService;
+        }
+
+        private IUIWindowDialogService UIService { get; set; }
 
         private string _selectedFile;
         public string SelectedFile
@@ -37,6 +41,23 @@ namespace DependencyExplorer.ViewModel
                     _selectedFile = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        public ICommand ExitCommand
+        {
+            get
+            {
+                return new DelegateCommand( p => true, () => Application.Current.Shutdown());
+            }
+        }
+
+        public ICommand ShowLicenseInfoCommand
+        {
+            get
+            {
+                return new DelegateCommand( p => true,
+                    () => UIService.ShowDialog("License information", new LicenseInfoViewModel()));
             }
         }
 
