@@ -1,7 +1,13 @@
-﻿namespace DependencyExplorer.Infrastructure
+﻿using System;
+
+using Licensing.Model;
+
+namespace DependencyExplorer.Infrastructure
 {
-    internal class LicenseManager
+    public class LicenseManager
     {
+        private readonly LicenseInfo _licenseInfo;
+
         static LicenseManager()
         {
             // TODO: check registry key existance
@@ -16,15 +22,16 @@
 
 
             // TODO: no valid license => warn user, give link to site, refuse to work
+            LicenseInfo = new LicenseInfo
+            {
+                Username = "Cowabunga User",
+                ValidUntil = DateTime.Now.AddYears(1),
+                LicenseType = LicenseType.Full,
+            };
+            Status = LicenseStatus.Valid;
         }
-    }
 
-    public enum LicenseStatus
-    {
-        NoLicense,
-        ValidTrial,
-        ExpiredTrial,
-        ValidLicense,
-        OlderVersionLicense,
+        public static LicenseStatus Status { get; private set; }
+        public static LicenseInfo LicenseInfo { get; private set; }
     }
 }

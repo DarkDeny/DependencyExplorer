@@ -1,25 +1,63 @@
-﻿namespace DependencyExplorer.ViewModel
+﻿using System.Windows;
+
+using DependencyExplorer.Infrastructure;
+
+using Licensing.Model;
+
+namespace DependencyExplorer.ViewModel
 {
     public class LicenseInfoViewModel : ViewModelBase
     {
-        private string _LicenseStatus;
+        public LicenseInfoViewModel(): this(new LicenseManager())
+        {
+            
+        }
 
-        public string LicenseStatus
+        public LicenseInfoViewModel(LicenseManager licenseManager)
+        {
+            LicenseManager = licenseManager;
+        }
+
+        private LicenseManager LicenseManager { get; set; }
+
+        public string Licensee
         {
             get
             {
-                return _LicenseStatus;
-            }
-            set
-            {
-                _LicenseStatus = value;
-                OnPropertyChanged();
+                return LicenseManager.LicenseInfo.Username;
             }
         }
 
-        public LicenseInfoViewModel()
+        public string LicenseText
         {
-            LicenseStatus = "cowabunga!";
+            get
+            {
+                return this.LicenseManager.LicenseInfo.ToString();
+            }
+        }
+
+        public Visibility FullLicenseVisibility
+        {
+            get
+            {
+                return LicenseManager.Status == LicenseStatus.ValidFull ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public Visibility NoLicenseVisibility
+        {
+            get
+            {
+                return LicenseManager.LicenseInfo.LicenseType == LicenseStatus.NoLicense ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public Visibility TrialLicenseVisibility
+        {
+            get
+            {
+                return LicenseManager.LicenseInfo.LicenseType == LicenseStatus.ValidTrial ? Visibility.Visible : Visibility.Collapsed;
+            }
         }
     }
 }

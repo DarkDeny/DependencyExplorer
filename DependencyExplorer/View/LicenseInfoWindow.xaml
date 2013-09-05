@@ -3,15 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Width="300" Height="300"
         >
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        
-        <TextBox Grid.Row="0" Text="This product is licensed to:"/>
-        
-        <TextBlock Grid.Row="1" Text="{Binding LicenseStatus}"/>
+    <Grid Visibility="{Binding FullLicenseVisibility}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="This product is licensed!"/>
+            <TextBox Grid.Row="1" IsReadOnly="True" Text="{Binding LicenseText, Mode=OneWay}"/>
+        </Grid>
     </Grid>
 </UserControl>
