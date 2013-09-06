@@ -1,5 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Windows;
+
+using DependencyExplorer.Infrastructure;
+using DependencyExplorer.View;
+using DependencyExplorer.ViewModel;
+
+using StructureMap;
 
 namespace DependencyExplorer
 {
@@ -8,6 +15,23 @@ namespace DependencyExplorer
     /// </summary>
     public partial class App
     {
+        public App()
+        {
+            ContainerBootstrapper.BootstrapStructureMap();
+
+            Startup += AppStartup;
+        }
+
+        private void AppStartup(object sender, StartupEventArgs e)
+        {
+            var uiService = ObjectFactory.GetInstance<IUIWindowDialogService>();
+
+            var window = new MainWindow();
+            var dependencyExplorerViewModel = new DependencyExplorerViewModel(uiService, window);
+            window.DataContext = dependencyExplorerViewModel;
+            window.Show();
+        }
+
         public static string Name
         {
             get

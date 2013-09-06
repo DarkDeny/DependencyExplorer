@@ -8,11 +8,6 @@ namespace DependencyExplorer.ViewModel
 {
     public class LicenseInfoViewModel : ViewModelBase
     {
-        public LicenseInfoViewModel(): this(new LicenseManager())
-        {
-            
-        }
-
         public LicenseInfoViewModel(LicenseManager licenseManager)
         {
             LicenseManager = licenseManager;
@@ -32,7 +27,7 @@ namespace DependencyExplorer.ViewModel
         {
             get
             {
-                return this.LicenseManager.LicenseInfo.ToString();
+                return LicenseManager.LicenseInfo.ToString();
             }
         }
 
@@ -40,7 +35,9 @@ namespace DependencyExplorer.ViewModel
         {
             get
             {
-                return LicenseManager.Status == LicenseStatus.ValidFull ? Visibility.Visible : Visibility.Collapsed;
+                bool validFullLicense = LicenseManager.Status == LicenseStatus.Valid
+                                        && LicenseManager.LicenseInfo.LicenseType == LicenseType.Full;
+                return validFullLicense ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -48,7 +45,7 @@ namespace DependencyExplorer.ViewModel
         {
             get
             {
-                return LicenseManager.LicenseInfo.LicenseType == LicenseStatus.NoLicense ? Visibility.Visible : Visibility.Collapsed;
+                return LicenseManager.Status == LicenseStatus.NoLicense ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -56,7 +53,9 @@ namespace DependencyExplorer.ViewModel
         {
             get
             {
-                return LicenseManager.LicenseInfo.LicenseType == LicenseStatus.ValidTrial ? Visibility.Visible : Visibility.Collapsed;
+                bool validTrialLicense = LicenseManager.Status == LicenseStatus.Valid
+                                        && LicenseManager.LicenseInfo.LicenseType == LicenseType.Trial;
+                return validTrialLicense ? Visibility.Visible : Visibility.Collapsed;
             }
         }
     }

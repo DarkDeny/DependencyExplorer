@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 
 namespace Licensing.Model
 {
@@ -12,7 +14,12 @@ namespace Licensing.Model
 
         public override string ToString()
         {
-            return String.Format("Registered to:\n{0}\nValid until:{1}\nLicense type:{2}", this.Username, this.ValidUntil, this.LicenseType);
+            var oldCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            var validUntil = this.ValidUntil.ToShortDateString();
+            Thread.CurrentThread.CurrentCulture = oldCulture;
+
+            return String.Format("Registered to:\n{0}\nValid until:\n{1}\nLicense type:\n{2}", this.Username, validUntil, this.LicenseType);
         }
     }
 }

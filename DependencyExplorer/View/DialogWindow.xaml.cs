@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace DependencyExplorer.View
 {
     /// <summary>
-    /// Interaction logic for WindowDialog.xaml
+    /// Interaction logic for DialogWindow.xaml
     /// </summary>
-    public partial class WindowDialog : Window
+    public partial class DialogWindow : Window
     {
-        public WindowDialog()
+        public DialogWindow()
         {
             InitializeComponent();
         }

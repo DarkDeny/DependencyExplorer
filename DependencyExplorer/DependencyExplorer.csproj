@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="StructureMap">
+      <HintPath>..\lib\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -53,12 +56,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\ContainerBootstrapper.cs" />
     <Compile Include="Infrastructure\LicenseManager.cs" />
     <Compile Include="ViewModel\AssemblyTreeItemViewModel.cs" />
-    <Compile Include="ViewModel\DependencyViewModel.cs" />
+    <Compile Include="ViewModel\DependencyExplorerViewModel.cs" />
     <Compile Include="ViewModel\IUIWindowDialogService.cs" />
     <Compile Include="ViewModel\LicenseInfoViewModel.cs" />
-    <Compile Include="ViewModel\UIWindowDialogService.cs" />
+    <Compile Include="Infrastructure\UIWindowDialogService.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="App.xaml.cs">
@@ -67,14 +71,15 @@
     </Compile>
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Helpers\TreeViewItemBehavior.cs" />
+    <Compile Include="ViewModel\WindowViewModelBase.cs" />
     <Compile Include="View\LicenseInfoWindow.xaml.cs">
       <DependentUpon>LicenseInfoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WindowDialog.xaml.cs">
-      <DependentUpon>WindowDialog.xaml</DependentUpon>
+    <Compile Include="View\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -116,7 +121,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\WindowDialog.xaml">
+    <Page Include="View\DialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

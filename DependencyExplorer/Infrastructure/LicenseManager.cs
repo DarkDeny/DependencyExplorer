@@ -6,7 +6,9 @@ namespace DependencyExplorer.Infrastructure
 {
     public class LicenseManager
     {
-        private readonly LicenseInfo _licenseInfo;
+        public static LicenseManager Instance { get; private set; }
+
+        private LicenseManager() { }
 
         static LicenseManager()
         {
@@ -22,16 +24,20 @@ namespace DependencyExplorer.Infrastructure
 
 
             // TODO: no valid license => warn user, give link to site, refuse to work
-            LicenseInfo = new LicenseInfo
+            Instance = new LicenseManager
             {
-                Username = "Cowabunga User",
-                ValidUntil = DateTime.Now.AddYears(1),
-                LicenseType = LicenseType.Full,
+                LicenseInfo =
+                    new LicenseInfo
+                    {
+                        Username = "Cowabunga User",
+                        ValidUntil = DateTime.Now.AddYears(1),
+                        LicenseType = LicenseType.Full,
+                    },
+                Status = LicenseStatus.Valid
             };
-            Status = LicenseStatus.Valid;
         }
 
-        public static LicenseStatus Status { get; private set; }
-        public static LicenseInfo LicenseInfo { get; private set; }
+        public LicenseStatus Status { get; private set; }
+        public LicenseInfo LicenseInfo { get; private set; }
     }
 }

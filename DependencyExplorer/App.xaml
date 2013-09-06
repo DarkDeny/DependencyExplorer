@@ -3,12 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:dialogViewModel="clr-namespace:DependencyExplorer.ViewModel"
              xmlns:view="clr-namespace:DependencyExplorer.View"
-             StartupUri="View\MainWindow.xaml">
+             >
     <Application.Resources>
 
         <DataTemplate DataType="{x:Type dialogViewModel:LicenseInfoViewModel}" >
             <view:LicenseInfoWindow/>
         </DataTemplate>
+
+        <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Padding" Value="3" />
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"></Style>
+        <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource BaseStyle}"></Style>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Padding" Value="15,1"></Setter>
+        </Style>
+        <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource BaseStyle}"></Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="13"></Setter>
+            <Setter Property="Padding" Value="15,1"></Setter>
+        </Style>
 
     </Application.Resources>
 </Application>
