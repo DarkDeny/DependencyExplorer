@@ -4,11 +4,11 @@ namespace DependencyExplorer.ViewModel
 {
     public class WindowViewModelBase : ViewModelBase
     {
-        protected Window Window { get; set; }
+        protected Window Window { get; private set; }
 
         public WindowViewModelBase(Window window)
         {
-            this.Window = window;
+            Window = window;
         }
     }
 }

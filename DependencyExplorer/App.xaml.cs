@@ -36,7 +36,7 @@ namespace DependencyExplorer
         {
             get
             {
-                return "Dependency Explorer";
+                return DependencyExplorer.Properties.Resources.ApplicationName;
             }
         }
 

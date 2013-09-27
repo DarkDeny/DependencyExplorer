@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using DependencyExplorer.Properties;
 
 namespace DependencyExplorer.ViewModel

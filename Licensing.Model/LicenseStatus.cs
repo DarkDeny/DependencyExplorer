@@ -7,7 +7,7 @@
         Expired,
         OlderVersionLicense,
         
-        // Invalid license treated as No License case
-        //InvalidLicense,
+        // Invalid license means that user entered non valid value as a license. This differs from case when there is no license at all
+        InvalidLicense,
     }
 }

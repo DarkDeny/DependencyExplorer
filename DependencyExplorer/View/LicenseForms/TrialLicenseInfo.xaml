@@ -1,0 +1,49 @@
+﻿<Window x:Class="DependencyExplorer.View.LicenseForms.TrialLicenseInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:DependencyExplorer.View.Controls"
+        
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:viewModel="clr-namespace:DependencyExplorer.ViewModel"
+ 
+        mc:Ignorable="d" 
+        d:DataContext="{Binding Source={d:DesignInstance Type=viewModel:TrialLicenseInfoViewModel, IsDesignTimeCreatable=False}}"
+        
+        WindowStyle="SingleBorderWindow" 
+        WindowStartupLocation="CenterOwner"
+        Height="200" Width="400"
+        >
+
+    <Window.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Text="Licensee:"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Text="Product is not licensed yet."/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Text="Trial expire on:"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Text="{Binding ValidThroughText, Mode=OneWay}"/>
+
+        <Button Grid.Row="2" Grid.Column="0" Content="Buy" Command="{Binding BuyCommand}"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="Enter license information" Command="{Binding EnterLicenseCommand}"/>
+
+        <controls:SendFeedbackUserControl Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0"/>
+    </Grid>
+</Window>

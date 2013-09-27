@@ -7,11 +7,10 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-
+using DependencyExplorer.Infrastructure;
+using DependencyExplorer.Properties;
 using DependencyVisualizer.Commands;
 using DependencyVisualizer.Model;
-
-using StructureMap;
 
 namespace DependencyExplorer.ViewModel
 {
@@ -28,11 +27,8 @@ namespace DependencyExplorer.ViewModel
         private string _selectedFile;
         public string SelectedFile
         {
-            get
-            {
-                return _selectedFile;
-            }
-            set
+            get { return _selectedFile; }
+            private set
             {
                 _selectedFile = value;
                 OnPropertyChanged();
@@ -51,9 +47,8 @@ namespace DependencyExplorer.ViewModel
         {
             get
             {
-                var vm = ObjectFactory.GetInstance<LicenseInfoViewModel>();
                 return new DelegateCommand( p => true,
-                    () => UIService.ShowDialog("License information", vm, Window));
+                    () => UIService.ShowLicenseDialog(Resources.LicenseInformationWindowTitle, Window));
             }
         }
 
@@ -136,7 +131,7 @@ namespace DependencyExplorer.ViewModel
                                     }
 
                                     _analyzedAssemblies.Add(referencedAssemblyModel);
-                                    this.Analyze(referencedAssembly, referencedAssemblyModel, rootFolder);
+                                    Analyze(referencedAssembly, referencedAssemblyModel, rootFolder);
                                     
                                     foundAssemblies++;
                                 }
@@ -149,7 +144,7 @@ namespace DependencyExplorer.ViewModel
                         }
                     }
 
-                    if (this._analyzedAssemblies.All(assm => assm.Name != assemblyName.Name)
+                    if (_analyzedAssemblies.All(assm => assm.Name != assemblyName.Name)
                         && 0 == foundAssemblies)
                     {
                         // We have a reference that is not in the same dir as the base assembly. It is either in GAC or it's location is unknown
@@ -157,7 +152,7 @@ namespace DependencyExplorer.ViewModel
                         referencedAssemblyModel = new AssemblyTreeItemViewModel(parentViewModel,
                             new AssemblyModel(assemblyName.Name, Location.Unknown));
                         parentViewModel.References.Add(referencedAssemblyModel);
-                        if (this._notFoundAssemblies.All(assm => assm.Name != referencedAssemblyModel.Name))
+                        if (_notFoundAssemblies.All(assm => assm.Name != referencedAssemblyModel.Name))
                         {
                             _notFoundAssemblies.Add(referencedAssemblyModel);
                         }
@@ -191,7 +186,7 @@ namespace DependencyExplorer.ViewModel
             Assemblies.Add(rootAssembly);
 
             OnPropertyChanged(propertyName: "AnalyzedAssemblies");
-            OnPropertyChanged("Assemblies");
+            OnPropertyChanged(propertyName: "Assemblies");
         }
     }
 }

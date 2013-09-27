@@ -56,12 +56,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\LicenseStatusToBrushConverter.cs" />
     <Compile Include="Infrastructure\ContainerBootstrapper.cs" />
     <Compile Include="Infrastructure\LicenseManager.cs" />
+    <Compile Include="ViewModel\EnterLicenseViewModel.cs" />
+    <Compile Include="ViewModel\FullLicenseInfoViewModel.cs" />
+    <Compile Include="ViewModel\LicenseViewModelBase.cs" />
+    <Compile Include="ViewModel\ViewModelRegistry.cs" />
     <Compile Include="ViewModel\AssemblyTreeItemViewModel.cs" />
     <Compile Include="ViewModel\DependencyExplorerViewModel.cs" />
-    <Compile Include="ViewModel\IUIWindowDialogService.cs" />
-    <Compile Include="ViewModel\LicenseInfoViewModel.cs" />
+    <Compile Include="Infrastructure\IUIWindowDialogService.cs" />
+    <Compile Include="ViewModel\TrialLicenseInfoViewModel.cs" />
     <Compile Include="Infrastructure\UIWindowDialogService.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -72,8 +77,17 @@
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Helpers\TreeViewItemBehavior.cs" />
     <Compile Include="ViewModel\WindowViewModelBase.cs" />
-    <Compile Include="View\LicenseInfoWindow.xaml.cs">
-      <DependentUpon>LicenseInfoWindow.xaml</DependentUpon>
+    <Compile Include="View\Controls\SendFeedbackUserControl.xaml.cs">
+      <DependentUpon>SendFeedbackUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LicenseForms\EnterLicenseView.xaml.cs">
+      <DependentUpon>EnterLicenseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LicenseForms\TrialLicenseInfo.xaml.cs">
+      <DependentUpon>TrialLicenseInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LicenseForms\FullLicenseInfo.xaml.cs">
+      <DependentUpon>FullLicenseInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -113,7 +127,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="View\LicenseInfoWindow.xaml">
+    <Page Include="View\Controls\SendFeedbackUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LicenseForms\EnterLicenseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LicenseForms\TrialLicenseInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LicenseForms\FullLicenseInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -131,6 +157,9 @@
       <Project>{8599D678-1D9A-4896-9776-A323FB438382}</Project>
       <Name>Licensing.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
