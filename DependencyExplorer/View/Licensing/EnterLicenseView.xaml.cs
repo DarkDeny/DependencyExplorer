@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace DependencyExplorer.View.LicenseForms {
+﻿namespace DependencyExplorer.View.Licensing {
     /// <summary>
     /// Interaction logic for EnterLicenseView.xaml
     /// </summary>

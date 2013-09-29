@@ -24,13 +24,13 @@ namespace DependencyExplorer.ViewModel
 
         private IUIWindowDialogService UIService { get; set; }
 
-        private string _selectedFile;
+        private string _SelectedFile;
         public string SelectedFile
         {
-            get { return _selectedFile; }
+            get { return _SelectedFile; }
             private set
             {
-                _selectedFile = value;
+                _SelectedFile = value;
                 OnPropertyChanged();
             }
         }

@@ -59,14 +59,14 @@
     <Compile Include="Helpers\LicenseStatusToBrushConverter.cs" />
     <Compile Include="Infrastructure\ContainerBootstrapper.cs" />
     <Compile Include="Infrastructure\LicenseManager.cs" />
-    <Compile Include="ViewModel\EnterLicenseViewModel.cs" />
-    <Compile Include="ViewModel\FullLicenseInfoViewModel.cs" />
-    <Compile Include="ViewModel\LicenseViewModelBase.cs" />
+    <Compile Include="ViewModel\Licensing\EnterLicenseViewModel.cs" />
+    <Compile Include="ViewModel\Licensing\FullLicenseInfoViewModel.cs" />
+    <Compile Include="ViewModel\Licensing\LicenseViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelRegistry.cs" />
     <Compile Include="ViewModel\AssemblyTreeItemViewModel.cs" />
     <Compile Include="ViewModel\DependencyExplorerViewModel.cs" />
     <Compile Include="Infrastructure\IUIWindowDialogService.cs" />
-    <Compile Include="ViewModel\TrialLicenseInfoViewModel.cs" />
+    <Compile Include="ViewModel\Licensing\TrialLicenseInfoViewModel.cs" />
     <Compile Include="Infrastructure\UIWindowDialogService.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -80,14 +80,14 @@
     <Compile Include="View\Controls\SendFeedbackUserControl.xaml.cs">
       <DependentUpon>SendFeedbackUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LicenseForms\EnterLicenseView.xaml.cs">
+    <Compile Include="View\Licensing\EnterLicenseView.xaml.cs">
       <DependentUpon>EnterLicenseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LicenseForms\TrialLicenseInfo.xaml.cs">
-      <DependentUpon>TrialLicenseInfo.xaml</DependentUpon>
+    <Compile Include="View\Licensing\TrialLicenseInfoView.xaml.cs">
+      <DependentUpon>TrialLicenseInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LicenseForms\FullLicenseInfo.xaml.cs">
-      <DependentUpon>FullLicenseInfo.xaml</DependentUpon>
+    <Compile Include="View\Licensing\FullLicenseInfoView.xaml.cs">
+      <DependentUpon>FullLicenseInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -131,15 +131,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LicenseForms\EnterLicenseView.xaml">
+    <Page Include="View\Licensing\EnterLicenseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LicenseForms\TrialLicenseInfo.xaml">
+    <Page Include="View\Licensing\TrialLicenseInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LicenseForms\FullLicenseInfo.xaml">
+    <Page Include="View\Licensing\FullLicenseInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,9 +158,7 @@
       <Name>Licensing.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NewFolder1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -3,13 +3,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:DependencyExplorer.View.Controls"
     
-    xmlns:viewModel="clr-namespace:DependencyExplorer.ViewModel"
-    x:Class="DependencyExplorer.View.LicenseForms.FullLicenseInfo"
+    x:Class="DependencyExplorer.View.Licensing.FullLicenseInfoView"
     
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:licensing="clr-namespace:DependencyExplorer.ViewModel.Licensing"
     mc:Ignorable="d" 
-    d:DataContext="{Binding Source={d:DesignInstance Type=viewModel:FullLicenseInfoViewModel, IsDesignTimeCreatable=False}}"
+    d:DataContext="{Binding Source={d:DesignInstance Type=licensing:FullLicenseInfoViewModel, IsDesignTimeCreatable=False}}"
     
     WindowStyle="SingleBorderWindow" 
     WindowStartupLocation="CenterOwner"

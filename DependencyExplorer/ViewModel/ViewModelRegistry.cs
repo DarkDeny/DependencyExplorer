@@ -1,4 +1,5 @@
 ﻿using DependencyExplorer.Infrastructure;
+using DependencyExplorer.ViewModel.Licensing;
 using StructureMap.Configuration.DSL;
 
 namespace DependencyExplorer.ViewModel

@@ -1,6 +1,6 @@
 ﻿using DependencyExplorer.Infrastructure;
 
-namespace DependencyExplorer.ViewModel
+namespace DependencyExplorer.ViewModel.Licensing
 {
     public class LicenseViewModelBase : ViewModelBase
     {

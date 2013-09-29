@@ -1,11 +1,9 @@
 ﻿using System.Windows.Input;
 using DependencyExplorer.Infrastructure;
-using DependencyExplorer.View.LicenseForms;
+using DependencyExplorer.View.Licensing;
 using DependencyVisualizer.Commands;
-using StructureMap;
-using LicenseManager = DependencyExplorer.Infrastructure.LicenseManager;
 
-namespace DependencyExplorer.ViewModel {
+namespace DependencyExplorer.ViewModel.Licensing {
     public class TrialLicenseInfoViewModel : LicenseViewModelBase {
         public TrialLicenseInfoViewModel(LicenseManager licenseManager, IUIWindowDialogService dialogService)
             : base(licenseManager) {
@@ -26,11 +24,10 @@ namespace DependencyExplorer.ViewModel {
         public ICommand EnterLicenseCommand {
             get {
                 return new DelegateCommand(canExecute => true,
-                    () => {
-                        var vm = ObjectFactory.GetInstance<EnterLicenseViewModel>();
-                        var view = ObjectFactory.GetInstance<EnterLicenseView>();
-                        DialogService.ShowDialog("Enter license", vm, view);
-                    });
+                    () =>
+                        // TODO: pass this.window as parent!
+                        DialogService.Show<EnterLicenseView>("Enter license", null)
+                    );
             }
         }
     }

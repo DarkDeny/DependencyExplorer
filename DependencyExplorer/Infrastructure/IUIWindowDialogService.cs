@@ -4,7 +4,7 @@ namespace DependencyExplorer.Infrastructure
 {
     public interface IUIWindowDialogService
     {
-        bool? ShowDialog(string title, object datacontext, Window ownerWindow);
-        bool? ShowLicenseDialog(string title, Window ownerWindow);
+        bool? ShowLicenseDialog(string title, Window parentWindow);
+        void Show<TView>(string title, Window parent) where TView : Window;
     }
 }

@@ -1,38 +1,48 @@
-﻿using System.Windows;
-
-using DependencyExplorer.View;
-using DependencyExplorer.View.LicenseForms;
-using DependencyExplorer.ViewModel;
+﻿using System;
+using System.Windows;
+using DependencyExplorer.View.Licensing;
 using Licensing.Model;
 using StructureMap;
 
-namespace DependencyExplorer.Infrastructure
-{
-    public class UIWindowDialogService : IUIWindowDialogService
-    {
-        public bool? ShowDialog(string title, object datacontext, Window ownerWindow)
-        {
-            var win = new DialogWindow { Title = title, DataContext = datacontext, Owner = ownerWindow };
-            return win.ShowDialog();
-        }
-        
-        public bool? ShowLicenseDialog(string title, Window ownerWindow) 
-        {
+namespace DependencyExplorer.Infrastructure {
+    public class UIWindowDialogService : IUIWindowDialogService {
+        public bool? ShowLicenseDialog(string title, Window parent) {
             Window win = null;
-            LicenseViewModelBase viewModel = null;
-            switch (LicenseManager.Instance.LicenseInfo.LicenseType)
-            {
+            switch (LicenseManager.Instance.LicenseInfo.LicenseType) {
                 case LicenseType.Full:
-                    viewModel = ObjectFactory.GetInstance<TrialLicenseInfoViewModel>();
-                    win = new FullLicenseInfo { Title = title, DataContext = viewModel, Owner = ownerWindow };
+                    win = Create<FullLicenseInfoView>().With(title).And(parent);
                     break;
                 case LicenseType.Trial:
-                    viewModel = ObjectFactory.GetInstance<FullLicenseInfoViewModel>();
-                    win = new TrialLicenseInfo { Title = title, DataContext = viewModel, Owner = ownerWindow };
+                    win = Create<TrialLicenseInfoView>().With(title).And(parent);
                     break;
             }
 
             return null != win ? win.ShowDialog() : null;
         }
-    }
+
+        public void Show<TView>(string title, Window parent) where TView : Window {
+            Create<TView>().With(title).And(parent).ShowDialog();
+        }
+
+        private Window ViewBeingCreated { get; set; }
+
+        private UIWindowDialogService Create<TView>() where TView : Window {
+            ViewBeingCreated = ObjectFactory.GetInstance<TView>();
+            var viewModelTypeName = ViewBeingCreated.GetType().ToString().Replace("View", "ViewModel");
+            var viewModelType = Type.GetType(viewModelTypeName);
+            var viewModel = ObjectFactory.GetInstance(viewModelType);
+            ViewBeingCreated.DataContext = viewModel;
+            return this;
+        }
+
+        private UIWindowDialogService With(string title) {
+            ViewBeingCreated.Title = title;
+            return this;
+        }
+
+        private Window And(Window parent) {
+            ViewBeingCreated.Owner = parent;
+            return ViewBeingCreated;
+        }
+   }
 }
