@@ -6,22 +6,27 @@ using StructureMap;
 
 namespace DependencyExplorer.Infrastructure {
     public class UIWindowDialogService : IUIWindowDialogService {
-        public bool? ShowLicenseDialog(string title, Window parent) {
-            Window win = null;
+        public bool? ShowLicenseDialog(string caption, Window parent) {
+            UIWindowDialogService win = null;
             switch (LicenseManager.Instance.LicenseInfo.LicenseType) {
                 case LicenseType.Full:
-                    win = Create<FullLicenseInfoView>().With(title).And(parent);
+                    win = Create<FullLicenseInfoView>().TitledWith(caption).OwnedBy(parent);
                     break;
                 case LicenseType.Trial:
-                    win = Create<TrialLicenseInfoView>().With(title).And(parent);
+                    win = Create<TrialLicenseInfoView>().TitledWith(caption).OwnedBy(parent);
                     break;
             }
 
             return null != win ? win.ShowDialog() : null;
         }
 
-        public void Show<TView>(string title, Window parent) where TView : Window {
-            Create<TView>().With(title).And(parent).ShowDialog();
+        public void Show<TView>(string caption, Window parent) where TView : Window {
+            Create<TView>().TitledWith(caption).OwnedBy(parent).ShowDialog();
+        }
+
+        private bool? ShowDialog()
+        {
+            return ViewBeingCreated.ShowDialog();
         }
 
         private Window ViewBeingCreated { get; set; }
@@ -35,14 +40,14 @@ namespace DependencyExplorer.Infrastructure {
             return this;
         }
 
-        private UIWindowDialogService With(string title) {
+        private UIWindowDialogService TitledWith(string title) {
             ViewBeingCreated.Title = title;
             return this;
         }
 
-        private Window And(Window parent) {
+        private UIWindowDialogService OwnedBy(Window parent) {
             ViewBeingCreated.Owner = parent;
-            return ViewBeingCreated;
+            return this;
         }
    }
 }
