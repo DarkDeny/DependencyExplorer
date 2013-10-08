@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Licensing.Model;
@@ -42,6 +43,16 @@ namespace DependencyExplorer.Infrastructure
         public void ParseLicense(string licenseUnderCheck)
         {
             var licenseStrings = licenseUnderCheck.Split('\n');
+            for (int index = 0; index < licenseStrings.Length; index++)
+            {
+                licenseStrings[index] = licenseStrings[index].Trim('\r');
+            }
+
+            if (licenseStrings.Length < 10)
+            {
+                LicenseInfo.ErrorMessage = "Wrong license - incomplete license text.";
+                return;
+            }
 
             LicenseInfo = new LicenseInfo { Username = licenseStrings[1] };
             Status = LicenseStatus.InvalidLicense;
@@ -71,7 +82,8 @@ namespace DependencyExplorer.Infrastructure
                 return;
             }
             LicenseInfo.LicensedVersion = version;
-            LicenseInfo.LicenseKey = licenseStrings[9];
+
+            LicenseInfo.LicenseKey = String.Join(String.Empty, licenseStrings.Skip(9));
 
             var licenseCheckResult = CheckLicense(LicenseInfo);
 
@@ -98,6 +110,11 @@ namespace DependencyExplorer.Infrastructure
                 var result = rsa.VerifyHash(hashBytes, HashAlgo, signatureBytes);
                 return result;
             }
+        }
+
+        public void PersistLicense()
+        {
+            // TODO: Persist license!
         }
     }
 }

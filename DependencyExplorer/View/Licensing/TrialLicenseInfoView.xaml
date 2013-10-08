@@ -2,11 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:DependencyExplorer.View.Controls"
+        xmlns:licensing="clr-namespace:DependencyExplorer.ViewModel.Licensing"
         
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:licensing="clr-namespace:DependencyExplorer.ViewModel.Licensing"
-
         mc:Ignorable="d" 
         d:DataContext="{Binding Source={d:DesignInstance Type=licensing:TrialLicenseInfoViewModel, IsDesignTimeCreatable=False}}"
         
@@ -36,13 +35,13 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Text="Licensee:"/>
-        <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Text="Product is not licensed yet."/>
+        <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Text="{Binding Licensee}"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Text="Trial expire on:"/>
         <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Text="{Binding ValidThroughText, Mode=OneWay}"/>
 
-        <Button Grid.Row="2" Grid.Column="0" Content="Buy" Command="{Binding BuyCommand}"/>
-        <Button Grid.Row="2" Grid.Column="1" Content="Enter license information" Command="{Binding EnterLicenseCommand}"/>
+        <Button Grid.Row="2" Grid.Column="0" Content="Buy" Visibility="{Binding BuyCommandVisibility}" Command="{Binding BuyCommand}"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="Enter/Update license information" Command="{Binding EnterLicenseCommand}"/>
 
         <controls:SendFeedbackUserControl Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0"/>
     </Grid>

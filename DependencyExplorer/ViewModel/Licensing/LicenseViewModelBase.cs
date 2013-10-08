@@ -1,21 +1,16 @@
-﻿using DependencyExplorer.Infrastructure;
+﻿using System.Windows;
+
+using DependencyExplorer.Infrastructure;
 
 namespace DependencyExplorer.ViewModel.Licensing
 {
-    public class LicenseViewModelBase : ViewModelBase
-    {
-        public LicenseViewModelBase(LicenseManager licenseManager)
-        {
+    public class LicenseViewModelBase : WindowViewModelBase {
+        public LicenseViewModelBase(LicenseManager licenseManager, IUIWindowDialogService dialogService, Window window)
+            : base (dialogService, window) {
             LicenseManager = licenseManager;
         }
 
-        private LicenseManager LicenseManager { get; set; }
-
-        public string Licensee {
-            get {
-                return LicenseManager.LicenseInfo.Username;
-            }
-        }
+        protected LicenseManager LicenseManager { get; set; }
 
         public string ValidThroughText {
             get {

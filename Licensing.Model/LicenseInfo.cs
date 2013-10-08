@@ -27,8 +27,16 @@ namespace Licensing.Model {
 
         public LicenseType LicenseType { get; set; }
 
-        public override string ToString() {
-            return String.Format("Registered to:\n{0}\nValid until:\n{1}\nLicense type:\n{2}", this.Username, ValidThroughText, this.LicenseType);
+        public override string ToString()
+        {
+            return
+                String.Format(
+                    "Registered to:\n{0}\nValid through:\n{1}\nLicense type:\n{2}\nRegistered version:\n{3}.{4}",
+                    this.Username,
+                    ValidThroughText,
+                    this.LicenseType,
+                    this.LicensedVersion.Major,
+                    this.LicensedVersion.Minor);
         }
     }
 }

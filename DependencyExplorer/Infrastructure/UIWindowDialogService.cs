@@ -35,7 +35,7 @@ namespace DependencyExplorer.Infrastructure {
             ViewBeingCreated = ObjectFactory.GetInstance<TView>();
             var viewModelTypeName = ViewBeingCreated.GetType().ToString().Replace("View", "ViewModel");
             var viewModelType = Type.GetType(viewModelTypeName);
-            var viewModel = ObjectFactory.GetInstance(viewModelType);
+            var viewModel = ObjectFactory.With(ViewBeingCreated).GetInstance(viewModelType);
             ViewBeingCreated.DataContext = viewModel;
             return this;
         }
