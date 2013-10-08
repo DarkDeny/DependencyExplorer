@@ -6,11 +6,11 @@ namespace DependencyExplorer.ViewModel
 {
     public class WindowViewModelBase : ViewModelBase {
         public WindowViewModelBase(IUIWindowDialogService dialogService, Window window) {
-            this.Window = window;
-            this.DialogService = dialogService;
+            Window = window;
+            DialogService = dialogService;
         }
 
-        protected Window Window { get; set; }
+        protected Window Window { get; private set; }
 
         protected IUIWindowDialogService DialogService { get; set; }
     }

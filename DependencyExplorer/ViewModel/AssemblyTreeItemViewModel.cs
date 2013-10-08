@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
-using DependencyVisualizer.Commands;
+using DependencyExplorer.Commands;
 using DependencyVisualizer.Model;
 
 namespace DependencyExplorer.ViewModel

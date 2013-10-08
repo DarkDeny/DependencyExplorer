@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-
+using DependencyExplorer.Commands;
 using DependencyExplorer.Infrastructure;
-
-using DependencyVisualizer.Commands;
-
 using Licensing.Model;
 
 namespace DependencyExplorer.ViewModel.Licensing {

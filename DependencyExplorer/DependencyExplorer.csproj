@@ -60,13 +60,12 @@
     <Compile Include="Infrastructure\ContainerBootstrapper.cs" />
     <Compile Include="Infrastructure\LicenseManager.cs" />
     <Compile Include="ViewModel\Licensing\EnterLicenseViewModel.cs" />
-    <Compile Include="ViewModel\Licensing\FullLicenseInfoViewModel.cs" />
     <Compile Include="ViewModel\Licensing\LicenseViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelRegistry.cs" />
     <Compile Include="ViewModel\AssemblyTreeItemViewModel.cs" />
     <Compile Include="ViewModel\DependencyExplorerViewModel.cs" />
     <Compile Include="Infrastructure\IUIWindowDialogService.cs" />
-    <Compile Include="ViewModel\Licensing\TrialLicenseInfoViewModel.cs" />
+    <Compile Include="ViewModel\Licensing\LicenseInfoViewModel.cs" />
     <Compile Include="Infrastructure\UIWindowDialogService.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -83,11 +82,8 @@
     <Compile Include="View\Licensing\EnterLicenseView.xaml.cs">
       <DependentUpon>EnterLicenseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Licensing\TrialLicenseInfoView.xaml.cs">
-      <DependentUpon>TrialLicenseInfoView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Licensing\FullLicenseInfoView.xaml.cs">
-      <DependentUpon>FullLicenseInfoView.xaml</DependentUpon>
+    <Compile Include="View\Licensing\LicenseInfoView.xaml.cs">
+      <DependentUpon>LicenseInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -135,11 +131,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Licensing\TrialLicenseInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Licensing\FullLicenseInfoView.xaml">
+    <Page Include="View\Licensing\LicenseInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

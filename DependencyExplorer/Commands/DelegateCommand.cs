@@ -1,27 +1,36 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace DependencyVisualizer.Commands
+namespace DependencyExplorer.Commands
 {
     public class DelegateCommand : ICommand
     {
-        private readonly Predicate<object> _canExecute;
-        private readonly Action _execute;
+        private readonly Predicate<object> _CanExecute;
+        private readonly Action _Execute;
 
         public DelegateCommand(Predicate<object> canExecute, Action execute)
         {
-            _canExecute = canExecute;
-            _execute = execute;
+            _CanExecute = canExecute;
+            _Execute = execute;
         }
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute(parameter);
+            return _CanExecute(parameter);
         }
 
         public void Execute(object parameter)
         {
-            _execute();
+            _Execute();
+        }
+
+        public void FireCanExecuteChanged()
+        {
+            var handler = CanExecuteChanged;
+            if (handler != null)
+            {
+                handler(this, new EventArgs());
+            }
         }
 
         public event EventHandler CanExecuteChanged;

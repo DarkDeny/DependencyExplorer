@@ -8,13 +8,9 @@ namespace DependencyExplorer.ViewModel
     {
         public ViewModelRegistry()
         {
-            For<TrialLicenseInfoViewModel>()
-                .Use<TrialLicenseInfoViewModel>()
-                .Ctor<TrialLicenseInfoViewModel>("licenseManager");
-
-            For<FullLicenseInfoViewModel>()
-                .Use<FullLicenseInfoViewModel>()
-                .Ctor<FullLicenseInfoViewModel>("licenseManager");
+            For<LicenseInfoViewModel>()
+                .Use<LicenseInfoViewModel>()
+                .Ctor<LicenseInfoViewModel>("licenseManager");
 
             For<LicenseManager>().Use(LicenseManager.Instance);
         }

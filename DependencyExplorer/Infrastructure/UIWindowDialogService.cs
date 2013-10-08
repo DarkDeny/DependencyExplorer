@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Windows;
 using DependencyExplorer.View.Licensing;
-using Licensing.Model;
 using StructureMap;
 
 namespace DependencyExplorer.Infrastructure {
     public class UIWindowDialogService : IUIWindowDialogService {
         public bool? ShowLicenseDialog(string caption, Window parent) {
-            UIWindowDialogService win = null;
-            switch (LicenseManager.Instance.LicenseInfo.LicenseType) {
-                case LicenseType.Full:
-                    win = Create<FullLicenseInfoView>().TitledWith(caption).OwnedBy(parent);
-                    break;
-                case LicenseType.Trial:
-                    win = Create<TrialLicenseInfoView>().TitledWith(caption).OwnedBy(parent);
-                    break;
-            }
+            var win = Create<LicenseInfoView>().TitledWith(caption).OwnedBy(parent);
 
             return null != win ? win.ShowDialog() : null;
         }
@@ -24,8 +15,7 @@ namespace DependencyExplorer.Infrastructure {
             Create<TView>().TitledWith(caption).OwnedBy(parent).ShowDialog();
         }
 
-        private bool? ShowDialog()
-        {
+        private bool? ShowDialog() {
             return ViewBeingCreated.ShowDialog();
         }
 
@@ -49,5 +39,5 @@ namespace DependencyExplorer.Infrastructure {
             ViewBeingCreated.Owner = parent;
             return this;
         }
-   }
+    }
 }

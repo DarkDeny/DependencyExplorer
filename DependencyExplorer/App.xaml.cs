@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Reflection;
 using System.Windows;
 
@@ -8,22 +8,18 @@ using DependencyExplorer.ViewModel;
 
 using StructureMap;
 
-namespace DependencyExplorer
-{
+namespace DependencyExplorer {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App
-    {
-        public App()
-        {
+    public partial class App {
+        public App() {
             ContainerBootstrapper.BootstrapStructureMap();
 
             Startup += AppStartup;
         }
 
-        private void AppStartup(object sender, StartupEventArgs e)
-        {
+        private void AppStartup(object sender, StartupEventArgs e) {
             var uiService = ObjectFactory.GetInstance<IUIWindowDialogService>();
 
             var window = new MainWindow();
@@ -32,21 +28,21 @@ namespace DependencyExplorer
             window.Show();
         }
 
-        public static string Name
-        {
-            get
-            {
+        public static string Name {
+            get {
                 return DependencyExplorer.Properties.Resources.ApplicationName;
             }
         }
 
-        public static string Version
-        {
-            get
-            {
-                var assembly = Assembly.GetExecutingAssembly();
-                var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-                return fileVersionInfo.ProductVersion;
+        public static string VersionString {
+            get {
+                return Version.ToString(2);
+            }
+        }
+
+        public static Version Version {
+            get {
+                return Assembly.GetCallingAssembly().GetName().Version;
             }
         }
     }

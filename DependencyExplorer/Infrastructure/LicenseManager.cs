@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Windows;
 using Licensing.Model;
 
 namespace DependencyExplorer.Infrastructure
@@ -57,7 +60,12 @@ namespace DependencyExplorer.Infrastructure
             LicenseInfo = new LicenseInfo { Username = licenseStrings[1] };
             Status = LicenseStatus.InvalidLicense;
             DateTime validThrough;
+
+            var oldCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             var dateParsed = DateTime.TryParse(licenseStrings[3], out validThrough);
+            Thread.CurrentThread.CurrentCulture = oldCulture;
+            
             if (!dateParsed)
             {
                 LicenseInfo.ErrorMessage = "Wrong license - unable to parse date.";
@@ -79,6 +87,11 @@ namespace DependencyExplorer.Infrastructure
             if (!versionParsed)
             {
                 LicenseInfo.ErrorMessage = "Wrong license - unable to parse registered version.";
+                return;
+            }
+            if (version.CompareTo(App.Version) < 0)
+            {
+                LicenseInfo.ErrorMessage = "Wrong license - license version mismatch product version.";
                 return;
             }
             LicenseInfo.LicensedVersion = version;
