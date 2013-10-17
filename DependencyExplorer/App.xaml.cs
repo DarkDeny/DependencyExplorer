@@ -28,9 +28,15 @@ namespace DependencyExplorer {
             window.Show();
         }
 
-        public static string Name {
+        public static string ProductName {
             get {
                 return DependencyExplorer.Properties.Resources.ApplicationName;
+            }
+        }
+
+        public static string CompanyName {
+            get {
+                return DependencyExplorer.Properties.Resources.CompanyName;
             }
         }
 

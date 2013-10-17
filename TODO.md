@@ -1,11 +1,5 @@
-Title!
-
-
-File
-  Open...
-  Recent
-Help
-  About
+File >> Recent
+Help >> About
 
 
 

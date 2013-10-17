@@ -61,6 +61,7 @@
     <Compile Include="Infrastructure\LicenseManager.cs" />
     <Compile Include="ViewModel\Licensing\EnterLicenseViewModel.cs" />
     <Compile Include="ViewModel\Licensing\LicenseViewModelBase.cs" />
+    <Compile Include="ViewModel\Mocks\MockDependencyExplorerViewModel.cs" />
     <Compile Include="ViewModel\ViewModelRegistry.cs" />
     <Compile Include="ViewModel\AssemblyTreeItemViewModel.cs" />
     <Compile Include="ViewModel\DependencyExplorerViewModel.cs" />

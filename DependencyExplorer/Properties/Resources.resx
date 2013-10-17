@@ -120,4 +120,7 @@
     <data name="ApplicationName" xml:space="preserve">
     <value>Dependency Explorer</value>
   </data>
+    <data name="CompanyName" xml:space="preserve">
+    <value>Soft Tiny Co</value>
+  </data>
 </root>

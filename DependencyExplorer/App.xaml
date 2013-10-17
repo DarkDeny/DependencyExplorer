@@ -4,18 +4,18 @@
              >
     <Application.Resources>
         <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
-            <Setter Property="FontSize" Value="13" />
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="2"/>
         </Style>
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"></Style>
-        <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource BaseStyle}"></Style>
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
+        <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource BaseStyle}"/>
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}">
-            <Setter Property="Padding" Value="15,1"></Setter>
+            <Setter Property="Padding" Value="5,1"></Setter>
         </Style>
-        <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource BaseStyle}"></Style>
+        <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource BaseStyle}"/>
         <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="FontSize" Value="13"></Setter>
-            <Setter Property="Padding" Value="15,1"></Setter>
+            <Setter Property="FontSize" Value="12"></Setter>
+            <Setter Property="Padding" Value="2"></Setter>
         </Style>
     </Application.Resources>
 </Application>

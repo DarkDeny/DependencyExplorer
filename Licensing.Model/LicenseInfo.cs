@@ -18,7 +18,7 @@ namespace Licensing.Model {
             get {
                 var oldCulture = Thread.CurrentThread.CurrentCulture;
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-                var validUntil = this.ValidUntil.ToShortDateString();
+                var validUntil = ValidUntil.ToShortDateString();
                 Thread.CurrentThread.CurrentCulture = oldCulture;
 
                 return validUntil;
@@ -27,16 +27,19 @@ namespace Licensing.Model {
 
         public LicenseType LicenseType { get; set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return
                 String.Format(
                     "Registered to:\n{0}\nValid through:\n{1}\nLicense type:\n{2}\nRegistered version:\n{3}.{4}",
-                    this.Username,
+                    Username,
                     ValidThroughText,
-                    this.LicenseType,
-                    this.LicensedVersion.Major,
-                    this.LicensedVersion.Minor);
+                    LicenseType,
+                    LicensedVersion.Major,
+                    LicensedVersion.Minor);
+        }
+
+        public string ToFullString() {
+            return String.Format("{0}\nLicense:\n{1}", ToString(), LicenseKey);
         }
     }
 }
