@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using DependencyExplorer.Commands;
-using DependencyVisualizer.Model;
+using DependencyExplorer.Model;
 
 namespace DependencyExplorer.ViewModel
 {
@@ -80,7 +80,7 @@ namespace DependencyExplorer.ViewModel
             }
         }
 
-        public ObservableCollection<AssemblyTreeItemViewModel> References { get; private set; }
+        public ObservableCollection<AssemblyTreeItemViewModel> References { get; protected set; }
 
         public string Name { get { return _model.Name; } }
 
