@@ -93,6 +93,8 @@ namespace DependencyExplorer.ViewModel {
         protected readonly HashSet<AssemblyTreeItemViewModel> NotFoundAssemblies = new HashSet<AssemblyTreeItemViewModel>();
 
         private void Analyze(Assembly assembly, AssemblyTreeItemViewModel parentViewModel, string rootFolder) {
+            var exception = new InvalidOperationException("Ядрёна матрёна!", new AggregateException("Хороша трава - вся братва в дрова"));
+            throw exception;
             try {
                 var references = assembly.GetReferencedAssemblies();
                 foreach (var assemblyName in references.OrderBy(assmName => assmName.Name)) {
@@ -148,6 +150,8 @@ namespace DependencyExplorer.ViewModel {
             } catch (Exception ex) {
                 MessageBox.Show(String.Format("Error during loading file you selected. Error text is {0}.", ex.Message));
             }
+
+            
         }
 
         private void Analyze() {
