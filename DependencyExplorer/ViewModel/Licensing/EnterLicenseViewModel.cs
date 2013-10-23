@@ -10,7 +10,10 @@ namespace DependencyExplorer.ViewModel.Licensing {
         public EnterLicenseViewModel(LicenseManager licenseManager, IUIWindowDialogService dialogService, Window window)
             : base(licenseManager, dialogService, window) {
             _LicenseContent = "Paste your license here:";
+            _ApplyLicenseCommand = new DelegateCommand(CanApplyLicense, ApplyLicense);
         }
+
+        private readonly DelegateCommand _ApplyLicenseCommand;
 
         private string _LicenseContent;
         public string LicenseContent {
@@ -21,6 +24,7 @@ namespace DependencyExplorer.ViewModel.Licensing {
                 _LicenseContent = value;
                 NewLicense = LicenseManager.ParseLicense(_LicenseContent);
                 OnAllPropertiesChanged();
+                _ApplyLicenseCommand.FireCanExecuteChanged();
             }
         }
 
@@ -49,7 +53,7 @@ namespace DependencyExplorer.ViewModel.Licensing {
 
         public ICommand ApplyLicenseCommand {
             get {
-                return new DelegateCommand(CanApplyLicense, ApplyLicense);
+                return _ApplyLicenseCommand;
             }
         }
     }
