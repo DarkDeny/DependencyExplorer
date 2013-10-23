@@ -11,6 +11,7 @@ namespace DependencyExplorer.ViewModel.Licensing {
             : base(licenseManager, dialogService, window) {
             _LicenseContent = "Paste your license here:";
             _ApplyLicenseCommand = new DelegateCommand(CanApplyLicense, ApplyLicense);
+            
         }
 
         private readonly DelegateCommand _ApplyLicenseCommand;

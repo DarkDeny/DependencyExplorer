@@ -9,9 +9,10 @@
         mc:Ignorable="d" 
         d:DataContext="{Binding Source={d:DesignInstance Type=licensing:LicenseInfoViewModel, IsDesignTimeCreatable=False}}"
         
-        WindowStyle="SingleBorderWindow" 
+        WindowStyle="ToolWindow" 
         WindowStartupLocation="CenterOwner"
-        Height="200" Width="400"
+        Height="200" Width="400" ResizeMode="NoResize"
+        ShowInTaskbar="False"
         >
 
     <Window.Resources>

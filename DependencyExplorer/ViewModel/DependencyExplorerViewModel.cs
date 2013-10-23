@@ -11,6 +11,7 @@ using DependencyExplorer.Commands;
 using DependencyExplorer.Infrastructure;
 using DependencyExplorer.Model;
 using DependencyExplorer.Properties;
+using DependencyExplorer.View.Licensing;
 
 using Licensing.Model;
 
@@ -22,6 +23,12 @@ namespace DependencyExplorer.ViewModel {
             UIService = anUIService;
             LicenseManager = licenseManager;
             CreateCommands();
+            window.Loaded += OnWindowLoaded;
+        }
+
+        private void OnWindowLoaded(object sender, RoutedEventArgs e) {
+            // TODO: if no license, try to get one from web service
+            //UIService.Show<GetTrialLicenseView>("", Window);
         }
 
         private LicenseManager LicenseManager { get; set; }

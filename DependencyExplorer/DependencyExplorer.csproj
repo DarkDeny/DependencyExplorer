@@ -40,6 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -62,6 +63,7 @@
     <Compile Include="Infrastructure\LicenseManager.cs" />
     <Compile Include="Infrastructure\SoftTinyCoSettings.cs" />
     <Compile Include="ViewModel\Licensing\EnterLicenseViewModel.cs" />
+    <Compile Include="ViewModel\Licensing\GetTrialLicenseViewModel.cs" />
     <Compile Include="ViewModel\Licensing\LicenseViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelRegistry.cs" />
     <Compile Include="ViewModel\AssemblyTreeItemViewModel.cs" />
@@ -83,6 +85,9 @@
     </Compile>
     <Compile Include="View\Licensing\EnterLicenseView.xaml.cs">
       <DependentUpon>EnterLicenseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Licensing\GetTrialLicenseView.xaml.cs">
+      <DependentUpon>GetTrialLicenseView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Licensing\LicenseInfoView.xaml.cs">
       <DependentUpon>LicenseInfoView.xaml</DependentUpon>
@@ -130,6 +135,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Licensing\EnterLicenseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Licensing\GetTrialLicenseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
