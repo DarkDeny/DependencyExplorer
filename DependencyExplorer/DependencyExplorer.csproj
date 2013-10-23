@@ -38,6 +38,7 @@
       <HintPath>..\lib\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,6 +60,7 @@
     <Compile Include="Helpers\LicenseStatusToBrushConverter.cs" />
     <Compile Include="Infrastructure\ContainerBootstrapper.cs" />
     <Compile Include="Infrastructure\LicenseManager.cs" />
+    <Compile Include="Infrastructure\SoftTinyCoSettings.cs" />
     <Compile Include="ViewModel\Licensing\EnterLicenseViewModel.cs" />
     <Compile Include="ViewModel\Licensing\LicenseViewModelBase.cs" />
     <Compile Include="ViewModel\Mocks\MockDependencyExplorerViewModel.cs" />

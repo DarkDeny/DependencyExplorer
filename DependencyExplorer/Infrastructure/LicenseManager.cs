@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+
 using Licensing.Model;
 using Microsoft.Win32;
 
@@ -48,13 +49,15 @@ namespace DependencyExplorer.Infrastructure
 
             var rkCurrentUser = Registry.CurrentUser;
             var rkSoftware = rkCurrentUser.OpenSubKey("Software", RegistryKeyPermissionCheck.ReadSubTree);
-            var rkDepExp = rkSoftware.OpenSubKey(RegistryKeyPath, RegistryKeyPermissionCheck.ReadSubTree);
-            if (null == rkDepExp) {
-                return;
-            }
-            var licenseStrings = rkDepExp.GetValue(LicenseRegistryValueName) as string[];
-            if (null != licenseStrings) {
-                ParseLicense(licenseStrings);
+            if (rkSoftware != null) {
+                var rkDepExp = rkSoftware.OpenSubKey(RegistryKeyPath, RegistryKeyPermissionCheck.ReadSubTree);
+                if (null == rkDepExp) {
+                    return;
+                }
+                var licenseStrings = rkDepExp.GetValue(LicenseRegistryValueName) as string[];
+                if (null != licenseStrings) {
+                    ParseLicense(licenseStrings);
+                }
             }
         }
 
@@ -73,18 +76,23 @@ namespace DependencyExplorer.Infrastructure
                 licenseStrings[index] = licenseStrings[index].Trim('\r');
             }
 
-            if (licenseStrings.Length < 10) {
+            if (licenseStrings.Length < 7) {
                 Instance.LicenseInfo.ErrorMessage = "Wrong license - incomplete license text.";
                 return;
             }
 
-            Instance.LicenseInfo = new LicenseInfo { Username = licenseStrings[1] };
+            Instance.LicenseInfo = new LicenseInfo {
+                Username = ExtractValue(licenseStrings[2]),
+                ProductName = ExtractValue(licenseStrings[0])
+            };
+
             Instance.Status = LicenseStatus.InvalidLicense;
             DateTime validThrough;
 
             var oldCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            var dateParsed = DateTime.TryParse(licenseStrings[3], out validThrough);
+            var dateString = ExtractValue(licenseStrings[3]);
+            var dateParsed = DateTime.TryParse(dateString, out validThrough);
             Thread.CurrentThread.CurrentCulture = oldCulture;
             
             if (!dateParsed)
@@ -95,7 +103,8 @@ namespace DependencyExplorer.Infrastructure
             Instance.LicenseInfo.ValidUntil = validThrough;
 
             LicenseType type;
-            var typeParsed = Enum.TryParse(licenseStrings[5], out type);
+            var typeString = ExtractValue(licenseStrings[4]);
+            var typeParsed = Enum.TryParse(typeString, out type);
             if (!typeParsed)
             {
                 Instance.LicenseInfo.ErrorMessage = "Wrong license - unable to parse license type.";
@@ -104,7 +113,8 @@ namespace DependencyExplorer.Infrastructure
             Instance.LicenseInfo.LicenseType = type;
 
             Version version;
-            var versionParsed = Version.TryParse(licenseStrings[7], out version);
+            var versionString = ExtractValue(licenseStrings[1]);
+            var versionParsed = Version.TryParse(versionString, out version);
             if (!versionParsed)
             {
                 Instance.LicenseInfo.ErrorMessage = "Wrong license - unable to parse registered version.";
@@ -118,7 +128,7 @@ namespace DependencyExplorer.Infrastructure
             }
             Instance.LicenseInfo.LicensedVersion = version;
 
-            Instance.LicenseInfo.LicenseKey = String.Concat(licenseStrings.Skip(9));
+            Instance.LicenseInfo.LicenseKey = String.Concat(licenseStrings.Skip(6));
 
             var licenseCheckResult = CheckLicense(Instance.LicenseInfo);
 
@@ -131,6 +141,11 @@ namespace DependencyExplorer.Infrastructure
                 Instance.LicenseInfo.ErrorMessage = "License ACCEPTED! Thanks for buying our product. Please do not forget to let us know what you think about it!";
                 Instance.Status = LicenseStatus.Valid;
             }
+        }
+
+        private static string ExtractValue(string licenseString) {
+            var start = licenseString.IndexOf(": ", StringComparison.Ordinal) + 2;
+            return licenseString.Substring(start);
         }
 
         private static bool CheckLicense(LicenseInfo licenseInfo) {
@@ -151,13 +166,15 @@ namespace DependencyExplorer.Infrastructure
             try {
                 var rkCurrentUser = Registry.CurrentUser;
                 var rkSoftware = rkCurrentUser.OpenSubKey("Software", RegistryKeyPermissionCheck.ReadWriteSubTree);
-                var rkDepExp = rkSoftware.CreateSubKey(RegistryKeyPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
-                if (null != rkDepExp) {
-                    rkDepExp.SetValue(LicenseRegistryValueName, LicenseInfo.ToFullString().Split('\n'), RegistryValueKind.MultiString);
+                if (rkSoftware != null) {
+                    var rkDepExp = rkSoftware.CreateSubKey(RegistryKeyPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
+                    if (null != rkDepExp) {
+                        rkDepExp.SetValue(LicenseRegistryValueName, LicenseInfo.ToFullString().Split('\n'), RegistryValueKind.MultiString);
+                    }
                 }
 
                 rkCurrentUser.Close();
-            } catch (Exception ex) {
+            } catch {
                 //TODO: log this error and let user know!
             }
         }

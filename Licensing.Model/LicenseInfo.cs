@@ -4,6 +4,8 @@ using System.Threading;
 
 namespace Licensing.Model {
     public class LicenseInfo {
+        public string ProductName { get; set; }
+
         public string Username { get; set; }
 
         public string ErrorMessage { get; set; }
@@ -30,16 +32,18 @@ namespace Licensing.Model {
         public override string ToString() {
             return
                 String.Format(
-                    "Registered to:\n{0}\nValid through:\n{1}\nLicense type:\n{2}\nRegistered version:\n{3}.{4}",
+                    "Product: {0}\nVersion: {1}.{2}\nRegistered to: {3}\nValid through: {4}\nLicense type: {5}",
+                    ProductName,
+                    LicensedVersion.Major,
+                    LicensedVersion.Minor,
                     Username,
                     ValidThroughText,
-                    LicenseType,
-                    LicensedVersion.Major,
-                    LicensedVersion.Minor);
+                    LicenseType
+                    );
         }
 
         public string ToFullString() {
-            return String.Format("{0}\nLicense:\n{1}", ToString(), LicenseKey);
+            return String.Format("{0}\nLicense key:\n{1}", ToString(), LicenseKey);
         }
     }
 }
