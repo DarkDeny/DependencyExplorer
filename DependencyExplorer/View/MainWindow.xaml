@@ -6,9 +6,9 @@
 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mocks="clr-namespace:DependencyExplorer.ViewModel.Mocks"
+        xmlns:viewModel="clr-namespace:DependencyExplorer.ViewModel"
         mc:Ignorable="d" 
-        d:DataContext="{Binding Source={d:DesignInstance Type=mocks:MockDependencyExplorerViewModel, IsDesignTimeCreatable=True}}"
+        d:DataContext="{Binding Source={d:DesignInstance Type=viewModel:DependencyExplorerViewModel, IsDesignTimeCreatable=True}}"
         >
 
     <DockPanel>

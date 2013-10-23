@@ -16,16 +16,19 @@ using Licensing.Model;
 
 namespace DependencyExplorer.ViewModel {
     public class DependencyExplorerViewModel : WindowViewModelBase {
-        public DependencyExplorerViewModel(IUIWindowDialogService anUIService, Window window)
+        public DependencyExplorerViewModel(LicenseManager licenseManager, IUIWindowDialogService anUIService, Window window)
             : base(anUIService, window) {
             Assemblies = new ObservableCollection<AssemblyTreeItemViewModel>();
             UIService = anUIService;
+            LicenseManager = licenseManager;
             CreateCommands();
         }
 
+        private LicenseManager LicenseManager { get; set; }
+
         private void CreateCommands() {
             SelectFileCommand = new DelegateCommand(
-                canExecute => LicenseManager.Instance.Status == LicenseStatus.Valid,
+                canExecute => LicenseManager.LicenseInfo.Status == LicenseStatus.Valid,
                 () => {
                     var dialog = new Microsoft.Win32.OpenFileDialog();
                     var result = dialog.ShowDialog();
@@ -41,6 +44,7 @@ namespace DependencyExplorer.ViewModel {
                     UIService.ShowLicenseDialog(Resources.LicenseInformationWindowTitle, Window);
                     SelectFileCommand.FireCanExecuteChanged();
                     OnPropertyChanged("NoLicenseMessageVisibility");
+                    OnPropertyChanged("Title");
                 });
         }
 
@@ -79,13 +83,29 @@ namespace DependencyExplorer.ViewModel {
 
         public string Title {
             get {
-                return String.Format("{0} v.{1}", App.ProductName, App.VersionString);
+                var appNameWithVersion = String.Format("{0} v.{1}", App.ProductName, App.VersionString);
+                if (LicenseManager.LicenseInfo.Status == LicenseStatus.Valid) {
+                    if (LicenseManager.LicenseInfo.LicenseType == LicenseType.Full) {
+                        return appNameWithVersion;
+                    }
+                    if (LicenseManager.LicenseInfo.LicenseType == LicenseType.Trial) {
+                        var daysTill = (LicenseManager.LicenseInfo.ValidUntil - DateTime.Now).Days;
+                        return appNameWithVersion + String.Format(" TRIAL: {0} day(s) left", daysTill);
+                    }
+                }
+
+                if (LicenseManager.LicenseInfo.Status == LicenseStatus.ExpiredTrial
+                    && LicenseManager.LicenseInfo.LicenseType == LicenseType.Trial) {
+                        return appNameWithVersion + " EXPIRED";
+                }
+                
+                return appNameWithVersion + " UNREGISTERED";
             }
         }
 
         public Visibility NoLicenseMessageVisibility {
             get {
-                return LicenseManager.Instance.Status == LicenseStatus.Valid ? Visibility.Collapsed : Visibility.Visible;
+                return LicenseManager.LicenseInfo.Status == LicenseStatus.Valid ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 

@@ -19,29 +19,31 @@ namespace DependencyExplorer.ViewModel.Licensing {
             }
             set {
                 _LicenseContent = value;
-                LicenseManager.Instance.ParseLicense(_LicenseContent);
+                NewLicense = LicenseManager.ParseLicense(_LicenseContent);
                 OnAllPropertiesChanged();
             }
         }
 
+        private LicenseInfo NewLicense { get; set; }
+
         public LicenseStatus LicenseStatus {
             get {
-                return LicenseManager.Instance.Status;
+                return NewLicense.Status;
             }
         }
 
         public String LicenseStatusText {
             get {
-                return LicenseManager.Instance.LicenseInfo.ErrorMessage;
+                return LicenseManager.LicenseInfo.ErrorMessage;
             }
         }
 
         private  bool CanApplyLicense(object obj) {
-            return LicenseManager.Instance.Status == LicenseStatus.Valid;
+            return null != NewLicense && NewLicense.Status == LicenseStatus.Valid;
         }
 
         private void ApplyLicense() {
-            LicenseManager.Instance.PersistLicense();
+            LicenseManager.PersistLicense(NewLicense);
             Window.Close();
         }
 

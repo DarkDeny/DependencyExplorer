@@ -12,7 +12,7 @@ namespace DependencyExplorer.ViewModel
                 .Use<LicenseInfoViewModel>()
                 .Ctor<LicenseInfoViewModel>("licenseManager");
 
-            For<LicenseManager>().Use(LicenseManager.Instance);
+            For<LicenseManager>().Use(LicenseManager.GetInstance());
         }
     }
 }

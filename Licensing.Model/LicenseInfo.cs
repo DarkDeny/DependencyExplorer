@@ -10,7 +10,7 @@ namespace Licensing.Model {
 
         public string ErrorMessage { get; set; }
 
-        public DateTime ValidUntil { private get; set; }
+        public DateTime ValidUntil { get; set; }
 
         public string LicenseKey { get; set; }
 
@@ -25,6 +25,34 @@ namespace Licensing.Model {
 
                 return validUntil;
             }
+        }
+
+        private LicenseStatus status;
+        public LicenseStatus Status {
+            get {
+                return status;
+            }
+            set {
+                status = value;
+                switch (status) {
+                    case LicenseStatus.ExpiredTrial:
+                        ErrorMessage = "Your trial license has expired.";
+                        break;
+                    case LicenseStatus.Incomplete:
+                        ErrorMessage = "Wrong license - incomplete license text.";
+                        break;
+                    case LicenseStatus.Valid:
+                        ErrorMessage = LicenseType == LicenseType.Full
+                                           ? "License ACCEPTED! Thanks for buying our product. Please do not forget to let us know what you think about it!"
+                                           : "You have trial license.";
+                        break;
+                }
+            }
+        }
+
+        public void InvalidateStatus(string errorMessage) {
+            Status = LicenseStatus.InvalidLicense;
+            ErrorMessage = errorMessage;
         }
 
         public LicenseType LicenseType { get; set; }

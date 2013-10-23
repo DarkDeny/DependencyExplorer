@@ -9,6 +9,8 @@ using System.Threading;
 using Licensing.Model;
 using Microsoft.Win32;
 
+using StructureMap;
+
 namespace DependencyExplorer.Infrastructure
 {
     public class LicenseManager
@@ -16,36 +18,33 @@ namespace DependencyExplorer.Infrastructure
         private static readonly string RegistryKeyPath = Path.Combine(App.CompanyName, App.ProductName); 
         private const string PublicKey = "<RSAKeyValue><Modulus>xnwFxcvemQz9vXrS/a18lZUx1vgxFPdi8MMOpI/ed5nUZV2pyX+B6oDQ2lddXDbbq0qhPA9K9lPZtafxGeGH6Tc2hV4ERYlW2ED+5kgZaaU5SivNKHId6RhJkUmKdIbjFYAyY3oWeeYnPCqqvf8wDNEkdHE1VNL5P0k9LtFq12M=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
         private static readonly string HashAlgo = CryptoConfig.MapNameToOID("SHA1");
+
         private const string LicenseRegistryValueName = "License";
 
-        public static LicenseManager Instance { get; private set; }
+        private static LicenseManager Instance { get; set; }
 
-        private LicenseManager() { }
+        private LicenseManager() {
+            LicenseInfo = new LicenseInfo { Status = LicenseStatus.NoLicense };
+        }
 
         static LicenseManager()
         {
-            // TODO: check registry key existance
-            // TODO: if no key found => LicenseStatus = NoLicense
-            // TODO: if key exist => check license data:
-                // TODO: correct trial license => LicenseStatus = Valid
-                // TODO: correct full license => LicenseStatus = Valid
-                // TODO: expired trial license => LicenseStatus = ExpiredTrial
-                // TODO: expired full license => check version:
-                    // TODO: expired full, same version => LicenseStatus = Valid
-                    // TODO: expired full, version is newer => LicenseStatus = Invalid
+            // TODO: no valid license => try to connect to api.softtiny.com and retrieve trial license.
 
-
-            // TODO: no valid license => warn user, give link to site, refuse to work
             LoadLicense();
+            CheckExpiration(Instance.LicenseInfo);
         }
 
-        private static void LoadLicense()
-        {
-            Instance = new LicenseManager
-            {
-                LicenseInfo = new LicenseInfo(),
-                Status = LicenseStatus.InvalidLicense
-            };
+        private static void CheckExpiration(LicenseInfo license) {
+            if (license.ValidUntil < DateTime.Now) {
+                if (license.LicenseType == LicenseType.Trial) {
+                    license.Status = LicenseStatus.ExpiredTrial;
+                }
+            }
+        }
+
+        private static void LoadLicense() {
+            Instance = new LicenseManager();
 
             var rkCurrentUser = Registry.CurrentUser;
             var rkSoftware = rkCurrentUser.OpenSubKey("Software", RegistryKeyPermissionCheck.ReadSubTree);
@@ -56,37 +55,38 @@ namespace DependencyExplorer.Infrastructure
                 }
                 var licenseStrings = rkDepExp.GetValue(LicenseRegistryValueName) as string[];
                 if (null != licenseStrings) {
-                    ParseLicense(licenseStrings);
+                    Instance.LicenseInfo = ParseLicense(licenseStrings);
                 }
             }
         }
 
-        public LicenseStatus Status { get; private set; }
-
         public LicenseInfo LicenseInfo { get; private set; }
 
-        public void ParseLicense(string licenseUnderCheck)
+        public LicenseInfo ParseLicense(string licenseUnderCheck)
         {
             var licenseStrings = licenseUnderCheck.Split('\n');
-            ParseLicense(licenseStrings);
+            return ParseLicense(licenseStrings);
         }
 
-        public static void ParseLicense(string[] licenseStrings) {
+        public static LicenseInfo ParseLicense(string[] licenseStrings) {
             for (int index = 0; index < licenseStrings.Length; index++) {
                 licenseStrings[index] = licenseStrings[index].Trim('\r');
             }
 
+            var license = new LicenseInfo();
             if (licenseStrings.Length < 7) {
-                Instance.LicenseInfo.ErrorMessage = "Wrong license - incomplete license text.";
-                return;
+                license.Status = LicenseStatus.Incomplete;
+                return license;
             }
 
-            Instance.LicenseInfo = new LicenseInfo {
-                Username = ExtractValue(licenseStrings[2]),
-                ProductName = ExtractValue(licenseStrings[0])
-            };
+            var productName = ExtractValue(licenseStrings[0]);
+            license.Username = ExtractValue(licenseStrings[2]);
+            license.ProductName = productName;
+            if (App.ProductName != productName) {
+                license.InvalidateStatus("Wrong license - product name mismatched.");
+                return license;
+            }
 
-            Instance.Status = LicenseStatus.InvalidLicense;
             DateTime validThrough;
 
             var oldCulture = Thread.CurrentThread.CurrentCulture;
@@ -95,52 +95,51 @@ namespace DependencyExplorer.Infrastructure
             var dateParsed = DateTime.TryParse(dateString, out validThrough);
             Thread.CurrentThread.CurrentCulture = oldCulture;
             
-            if (!dateParsed)
-            {
-                Instance.LicenseInfo.ErrorMessage = "Wrong license - unable to parse date.";
-                return;
+            if (!dateParsed) {
+                license.InvalidateStatus("Wrong license - unable to parse date.");
+                return license;
             }
-            Instance.LicenseInfo.ValidUntil = validThrough;
+            license.ValidUntil = validThrough;
 
             LicenseType type;
             var typeString = ExtractValue(licenseStrings[4]);
             var typeParsed = Enum.TryParse(typeString, out type);
             if (!typeParsed)
             {
-                Instance.LicenseInfo.ErrorMessage = "Wrong license - unable to parse license type.";
-                return;
+                license.InvalidateStatus("Wrong license - unable to parse license type.");
+                return license;
             }
-            Instance.LicenseInfo.LicenseType = type;
+            license.LicenseType = type;
 
             Version version;
             var versionString = ExtractValue(licenseStrings[1]);
             var versionParsed = Version.TryParse(versionString, out version);
             if (!versionParsed)
             {
-                Instance.LicenseInfo.ErrorMessage = "Wrong license - unable to parse registered version.";
-                return;
+                license.InvalidateStatus("Wrong license - unable to parse registered version.");
+                return license;
             }
             
             if (version.Major < App.Version.Major )
             {
-                Instance.LicenseInfo.ErrorMessage = "Wrong license - license version mismatch product version.";
-                return;
+                license.InvalidateStatus("Wrong license - license version mismatch product version.");
+                return license;
             }
-            Instance.LicenseInfo.LicensedVersion = version;
+            license.LicensedVersion = version;
 
-            Instance.LicenseInfo.LicenseKey = String.Concat(licenseStrings.Skip(6));
-
-            var licenseCheckResult = CheckLicense(Instance.LicenseInfo);
+            license.LicenseKey = String.Concat(licenseStrings.Skip(6));
+            var licenseCheckResult = CheckLicense(license);
 
             if (!licenseCheckResult)
             {
-                Instance.LicenseInfo.ErrorMessage = "Wrong license - bad license key.";
+                license.InvalidateStatus("Wrong license - bad license key.");
             }
             else
             {
-                Instance.LicenseInfo.ErrorMessage = "License ACCEPTED! Thanks for buying our product. Please do not forget to let us know what you think about it!";
-                Instance.Status = LicenseStatus.Valid;
+                license.Status = LicenseStatus.Valid;
+                CheckExpiration(license);
             }
+            return license;
         }
 
         private static string ExtractValue(string licenseString) {
@@ -162,8 +161,9 @@ namespace DependencyExplorer.Infrastructure
             }
         }
 
-        public void PersistLicense() {
+        public void PersistLicense(LicenseInfo license) {
             try {
+                LicenseInfo = license;
                 var rkCurrentUser = Registry.CurrentUser;
                 var rkSoftware = rkCurrentUser.OpenSubKey("Software", RegistryKeyPermissionCheck.ReadWriteSubTree);
                 if (rkSoftware != null) {
@@ -177,6 +177,10 @@ namespace DependencyExplorer.Infrastructure
             } catch {
                 //TODO: log this error and let user know!
             }
+        }
+
+        public static LicenseManager GetInstance() {
+            return Instance;
         }
     }
 }

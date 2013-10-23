@@ -32,12 +32,12 @@ namespace DependencyExplorer.ViewModel.Licensing {
         }
 
         private bool HaveFullLicense() {
-            return LicenseManager.Status == LicenseStatus.Valid
+            return LicenseManager.LicenseInfo.Status == LicenseStatus.Valid
                    && LicenseManager.LicenseInfo.LicenseType == LicenseType.Full;
         }
 
         private bool HaveValidLicense() {
-            return LicenseManager.Status == LicenseStatus.Valid;
+            return LicenseManager.LicenseInfo.Status == LicenseStatus.Valid;
         }
 
         public ICommand EnterLicenseCommand {

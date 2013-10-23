@@ -15,7 +15,7 @@ namespace DependencyExplorer.Helpers {
                 case LicenseStatus.NoLicense:
                     // No license entered - nothing to signal about yet
                     return new SolidColorBrush(Colors.Transparent);
-                case LicenseStatus.Expired:
+                case LicenseStatus.ExpiredTrial:
                 case LicenseStatus.InvalidLicense:
                 case LicenseStatus.OlderVersionLicense:
                     // Red light on invalid license
