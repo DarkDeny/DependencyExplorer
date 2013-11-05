@@ -14,9 +14,10 @@ using DependencyExplorer.Properties;
 using DependencyExplorer.View.Licensing;
 
 using Licensing.Model;
+using LicenseManager = DependencyExplorer.Infrastructure.LicenseManager;
 
 namespace DependencyExplorer.ViewModel {
-    public class DependencyExplorerViewModel : WindowViewModelBase {
+    public sealed class DependencyExplorerViewModel : WindowViewModelBase {
         public DependencyExplorerViewModel(LicenseManager licenseManager, IUIWindowDialogService anUIService, Window window)
             : base(anUIService, window) {
             Assemblies = new ObservableCollection<AssemblyTreeItemViewModel>();
@@ -28,7 +29,9 @@ namespace DependencyExplorer.ViewModel {
 
         private void OnWindowLoaded(object sender, RoutedEventArgs e) {
             // TODO: if no license, try to get one from web service
-            //UIService.Show<GetTrialLicenseView>("", Window);
+            if (LicenseManager.LicenseInfo.Status == LicenseStatus.NoLicense) {
+                UIService.Show<GetTrialLicenseView>("", Window);
+            }
         }
 
         private LicenseManager LicenseManager { get; set; }
@@ -58,7 +61,7 @@ namespace DependencyExplorer.ViewModel {
         private IUIWindowDialogService UIService { get; set; }
 
         private string _SelectedFile;
-        public virtual string SelectedFile {
+        public string SelectedFile {
             get { return _SelectedFile; }
             protected set {
                 _SelectedFile = value;
@@ -76,13 +79,13 @@ namespace DependencyExplorer.ViewModel {
 
         public DelegateCommand SelectFileCommand { get; private set; }
 
-        public virtual ObservableCollection<AssemblyTreeItemViewModel> Assemblies { get; private set; }
+        public ObservableCollection<AssemblyTreeItemViewModel> Assemblies { get; private set; }
 
         public IEnumerable<AssemblyTreeItemViewModel> AllAnalyzedAssemblies {
             get {
                 var list = new List<AssemblyTreeItemViewModel>();
-                list.AddRange(AnalyzedAssemblies);
-                list.AddRange(NotFoundAssemblies);
+                list.AddRange(_AnalyzedAssemblies);
+                list.AddRange(_NotFoundAssemblies);
 
                 return list.OrderBy(asm => asm.Name).ToList();
             }
@@ -116,8 +119,8 @@ namespace DependencyExplorer.ViewModel {
             }
         }
 
-        protected readonly HashSet<AssemblyTreeItemViewModel> AnalyzedAssemblies = new HashSet<AssemblyTreeItemViewModel>();
-        protected readonly HashSet<AssemblyTreeItemViewModel> NotFoundAssemblies = new HashSet<AssemblyTreeItemViewModel>();
+        private readonly HashSet<AssemblyTreeItemViewModel> _AnalyzedAssemblies = new HashSet<AssemblyTreeItemViewModel>();
+        private readonly HashSet<AssemblyTreeItemViewModel> _NotFoundAssemblies = new HashSet<AssemblyTreeItemViewModel>();
 
         private void Analyze(Assembly assembly, AssemblyTreeItemViewModel parentViewModel, string rootFolder) {
             try {
@@ -141,11 +144,11 @@ namespace DependencyExplorer.ViewModel {
 
                                     var referencedAssemblyName = referencedAssembly.GetName().Name;
                                     Debug.WriteLine("Starting to analyze " + referencedAssemblyName);
-                                    if (AnalyzedAssemblies.Any(assm => assm.Name == referencedAssemblyName)) {
+                                    if (_AnalyzedAssemblies.Any(assm => assm.Name == referencedAssemblyName)) {
                                         continue;
                                     }
 
-                                    AnalyzedAssemblies.Add(referencedAssemblyModel);
+                                    _AnalyzedAssemblies.Add(referencedAssemblyModel);
                                     Analyze(referencedAssembly, referencedAssemblyModel, rootFolder);
 
                                     foundAssemblies++;
@@ -157,15 +160,15 @@ namespace DependencyExplorer.ViewModel {
                         }
                     }
 
-                    if (AnalyzedAssemblies.All(assm => assm.Name != assemblyName.Name)
+                    if (_AnalyzedAssemblies.All(assm => assm.Name != assemblyName.Name)
                         && 0 == foundAssemblies) {
                         // We have a reference that is not in the same dir as the base assembly. It is either in GAC or it's location is unknown
                         // Currently we are not checking GAC, so Location is Unknown
                         referencedAssemblyModel = new AssemblyTreeItemViewModel(parentViewModel,
                             new AssemblyModel(assemblyName.Name, Location.Unknown));
                         parentViewModel.References.Add(referencedAssemblyModel);
-                        if (NotFoundAssemblies.All(assm => assm.Name != referencedAssemblyModel.Name)) {
-                            NotFoundAssemblies.Add(referencedAssemblyModel);
+                        if (_NotFoundAssemblies.All(assm => assm.Name != referencedAssemblyModel.Name)) {
+                            _NotFoundAssemblies.Add(referencedAssemblyModel);
                         }
                     }
                 }

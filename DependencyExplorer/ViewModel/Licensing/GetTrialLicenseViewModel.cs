@@ -20,11 +20,13 @@ namespace DependencyExplorer.ViewModel.Licensing {
 
         void OnWindowLoaded(object sender, RoutedEventArgs e) {
             var cpuID = GetCpuID();
-            var uri = new Uri(SoftTinyCoSettings.Settings.ServerUrl + "/v1/trial");
+            var uri = new Uri(SoftTinyCoSettings.Settings.ServerUrl);
             var webClient = new WebClient();
-            var reqparm = new NameValueCollection {
-                { "cpuid", cpuID },
-            };
+            var reqparm = new NameValueCollection
+                {
+                    {"hardware_id", cpuID},
+                    {"product_id", "1"},
+                };
             webClient.UploadValuesCompleted += OnUploadCompleted;
             webClient.UploadValuesAsync(uri, "POST", reqparm);
         }
