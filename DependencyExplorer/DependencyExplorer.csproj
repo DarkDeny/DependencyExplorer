@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\LicenseStatusToBrushConverter.cs" />
     <Compile Include="Infrastructure\ContainerBootstrapper.cs" />
+    <Compile Include="Infrastructure\ErrorManager.cs" />
     <Compile Include="Infrastructure\LicenseManager.cs" />
     <Compile Include="Infrastructure\SoftTinyCoSettings.cs" />
     <Compile Include="ViewModel\Licensing\EnterLicenseViewModel.cs" />

@@ -37,7 +37,8 @@ namespace DependencyExplorer.Infrastructure
 
         private static void CheckExpiration(LicenseInfo license) {
             if (license.ValidUntil < DateTime.Now) {
-                if (license.LicenseType == LicenseType.Trial) {
+                if (license.Status != LicenseStatus.NoLicense 
+                    && license.LicenseType == LicenseType.Trial) {
                     license.Status = LicenseStatus.ExpiredTrial;
                 }
             }
