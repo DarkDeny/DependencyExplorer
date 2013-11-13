@@ -33,7 +33,6 @@ namespace DependencyExplorer.ViewModel.Licensing {
                     {"product_id", "1"},
                 };
             webClient.UploadValuesCompleted += OnUploadCompleted;
-            // TODO: Check with timeout for this operation!
             webClient.UploadValuesAsync(uri, "POST", reqparm);
         }
 
@@ -45,21 +44,21 @@ namespace DependencyExplorer.ViewModel.Licensing {
                 var license = LicenseManager.ParseLicense(response);
                 if (license.Status == LicenseStatus.Valid) {
                     LicenseManager.PersistLicense(license);
-                    MessageBox.Show("We have successfully acquired your trial license!");
+                    MessageBox.Show(Window, "We have successfully acquired a trial license for you!");
                     Window.Close();
                 } else if (license.Status == LicenseStatus.ExpiredTrial) {
-                    MessageBox.Show(
+                    MessageBox.Show(Window, 
                         "We have successfully acquired your trial license, but it is already expired. Please consider buying product if you need it!");
                     Window.Close();
                 } else {
                     _app.LogError("GetTrial", license.ErrorMessage);
-                    MessageBox.Show(
+                    MessageBox.Show(Window, 
                         "We were not able to get you a valid trial license. If problem persist, please contact us!");
                     Window.Close();
                 }
             } catch (TargetInvocationException targetInvocationException) {
                 if (targetInvocationException.InnerException is WebException) {
-                    MessageBox.Show(OnGetTrialFailedUserMessage);
+                    MessageBox.Show(Window, OnGetTrialFailedUserMessage);
                     Window.Close();
                 } else {
                     throw;

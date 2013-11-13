@@ -28,9 +28,9 @@ namespace DependencyExplorer.ViewModel {
         }
 
         private void OnWindowLoaded(object sender, RoutedEventArgs e) {
-            // TODO: if no license, try to get one from web service
             if (LicenseManager.LicenseInfo.Status == LicenseStatus.NoLicense) {
                 UIService.Show<GetTrialLicenseView>("", Window);
+                UpdateLicenseDependentProperties();
             }
         }
 
@@ -52,10 +52,14 @@ namespace DependencyExplorer.ViewModel {
                 canExecute => true,
                 () => {
                     UIService.ShowLicenseDialog(Resources.LicenseInformationWindowTitle, Window);
-                    SelectFileCommand.FireCanExecuteChanged();
-                    OnPropertyChanged("NoLicenseMessageVisibility");
-                    OnPropertyChanged("Title");
+                    UpdateLicenseDependentProperties();
                 });
+        }
+
+        private void UpdateLicenseDependentProperties() {
+            SelectFileCommand.FireCanExecuteChanged();
+            OnPropertyChanged("NoLicenseMessageVisibility");
+            OnPropertyChanged("Title");
         }
 
         private IUIWindowDialogService UIService { get; set; }
