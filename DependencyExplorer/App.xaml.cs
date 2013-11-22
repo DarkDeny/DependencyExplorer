@@ -47,10 +47,6 @@ namespace DependencyExplorer {
                 CompanyName);
             
             var productFolder = Path.Combine(companyFolder, ProductName);
-            // TODO: can we create multiple folders via one call to CreateDirectory?
-            if (!Directory.Exists(companyFolder)) {
-                Directory.CreateDirectory(companyFolder);
-            }
             if (!Directory.Exists(productFolder)) {
                 Directory.CreateDirectory(productFolder);
             }
