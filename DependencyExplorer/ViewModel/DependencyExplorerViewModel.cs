@@ -182,8 +182,6 @@ namespace DependencyExplorer.ViewModel {
             } catch (Exception ex) {
                 MessageBox.Show(String.Format("Error during loading file you selected. Error text is {0}.", ex.Message));
             }
-
-            
         }
 
         private void Analyze() {

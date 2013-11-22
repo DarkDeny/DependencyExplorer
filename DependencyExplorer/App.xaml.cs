@@ -22,13 +22,13 @@ namespace DependencyExplorer {
         }
 
         public void LogFailure(string situation, string userErrorMessage, Exception exception) {
-            ErrorManager.LogException(CompanyName, ProductName, FullVersionString, GetProductFolder(), situation, exception);
+            ErrorManager.LogException(ProductName, FullVersionString, GetProductFolder(), situation, exception);
             MessageBox.Show(userErrorMessage, "Error occured");
             Shutdown();
         }
 
         public void LogError(string situation, string userErrorMessage) {
-            ErrorManager.LogError(CompanyName, ProductName, FullVersionString, GetProductFolder(), situation, userErrorMessage);
+            ErrorManager.LogError(ProductName, FullVersionString, GetProductFolder(), situation, userErrorMessage);
         }
 
         private void AppDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e) {
