@@ -198,7 +198,7 @@ namespace DependencyExplorer.ViewModel {
             rootAssembly.IsExpanded = true;
             Assemblies.Add(rootAssembly);
 
-            OnPropertyChanged(propertyName: "AnalyzedAssemblies");
+            OnPropertyChanged(propertyName: "AllAnalyzedAssemblies");
             OnPropertyChanged(propertyName: "Assemblies");
         }
     }

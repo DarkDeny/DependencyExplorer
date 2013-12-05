@@ -18,12 +18,7 @@ namespace Licensing.Model {
 
         public string ValidThroughText {
             get {
-                var oldCulture = Thread.CurrentThread.CurrentCulture;
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-                var validUntil = ValidUntil.ToShortDateString();
-                Thread.CurrentThread.CurrentCulture = oldCulture;
-
-                return validUntil;
+                return String.Format("{0:D2}/{1:D2}/{2}", ValidUntil.Month, ValidUntil.Day, ValidUntil.Year);
             }
         }
 

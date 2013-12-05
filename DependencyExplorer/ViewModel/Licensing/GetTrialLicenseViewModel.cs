@@ -2,7 +2,9 @@
 using System.Collections.Specialized;
 using System.Management;
 using System.Net;
+using System.Net.Security;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows;
 
@@ -32,6 +34,7 @@ namespace DependencyExplorer.ViewModel.Licensing {
                     {"hardware_id", cpuID},
                     {"product_id", "1"},
                 };
+            ServicePointManager.ServerCertificateValidationCallback = (o, certificate, chain, errors) => true;
             webClient.UploadValuesCompleted += OnUploadCompleted;
             webClient.UploadValuesAsync(uri, "POST", reqparm);
         }
