@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("DependencyExplorer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Soft Tiny Co")]
 [assembly: AssemblyProduct("DependencyExplorer")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
+[assembly: AssemblyCopyright("Copyright © Soft Tiny Co 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

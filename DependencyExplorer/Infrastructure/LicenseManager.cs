@@ -9,8 +9,6 @@ using System.Threading;
 using Licensing.Model;
 using Microsoft.Win32;
 
-using StructureMap;
-
 namespace DependencyExplorer.Infrastructure
 {
     public class LicenseManager
