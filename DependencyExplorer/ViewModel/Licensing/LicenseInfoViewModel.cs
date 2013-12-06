@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using DependencyExplorer.Commands;
@@ -15,9 +16,8 @@ namespace DependencyExplorer.ViewModel.Licensing {
         public ICommand BuyCommand {
             get {
                 return new DelegateCommand(canExecute => true,
-                    () => {
-                        // TODO: redirect user to buying site!
-                    });
+                    () => Process.Start(new ProcessStartInfo(SoftTinyCoSettings.Settings.BuyUrl))
+                );
             }
         }
 

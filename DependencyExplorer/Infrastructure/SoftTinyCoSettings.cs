@@ -16,5 +16,11 @@ namespace DependencyExplorer.Infrastructure {
             get { return (string)this["ServerUrl"]; }
             set { this["ServerUrl"] = value; }
         }
+
+        [ConfigurationProperty("BuyUrl", IsRequired = true)]
+        public string BuyUrl {
+            get { return (string)this["BuyUrl"]; }
+            set { this["BuyUrl"] = value; }
+        }
     }
 }
