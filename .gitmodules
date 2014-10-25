@@ -1,0 +1,3 @@
+[submodule "HttpTestTool"]
+	path = HttpTestTool
+	url = git@github.com:DarkDeny/HttpTestTool.git
