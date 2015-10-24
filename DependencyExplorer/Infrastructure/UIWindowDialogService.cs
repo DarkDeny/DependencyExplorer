@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Windows;
-using DependencyExplorer.View.Licensing;
 using StructureMap;
 
 namespace DependencyExplorer.Infrastructure {
     public class UIWindowDialogService : IUIWindowDialogService {
-        public bool? ShowLicenseDialog(string caption, Window parent) {
-            var win = Create<LicenseInfoView>().TitledWith(caption).OwnedBy(parent);
-
-            return null != win ? win.ShowDialog() : null;
-        }
-
         public void Show<TView>(string caption, Window parent) where TView : Window {
             Create<TView>().TitledWith(caption).OwnedBy(parent).ShowDialog();
         }

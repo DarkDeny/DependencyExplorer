@@ -19,23 +19,17 @@
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About"/>
-                <MenuItem Header="_License..." Command="{Binding ShowLicenseInfoCommand}"/>
             </MenuItem>
         </Menu>
 
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Visibility="{Binding NoLicenseMessageVisibility}">
-                <TextBlock Foreground="Red" Text="No valid license detected. Please use menu for entering a license." />
-            </Grid>
-
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>

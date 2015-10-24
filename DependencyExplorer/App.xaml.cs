@@ -54,10 +54,9 @@ namespace DependencyExplorer {
         }
 
         private void AppStartup(object sender, StartupEventArgs e) {
-            var licenseManager = ObjectFactory.GetInstance<LicenseManager>();
             var uiService = ObjectFactory.GetInstance<IUIWindowDialogService>();
             var window = new MainWindow();
-            var dependencyExplorerViewModel = new DependencyExplorerViewModel(licenseManager, uiService, window);
+            var dependencyExplorerViewModel = new DependencyExplorerViewModel(uiService, window);
             window.DataContext = dependencyExplorerViewModel;
             window.Show();
         }

@@ -10,35 +10,18 @@ using System.Windows.Input;
 using DependencyExplorer.Commands;
 using DependencyExplorer.Infrastructure;
 using DependencyExplorer.Model;
-using DependencyExplorer.Properties;
-using DependencyExplorer.View.Licensing;
-
-using Licensing.Model;
-using LicenseManager = DependencyExplorer.Infrastructure.LicenseManager;
 
 namespace DependencyExplorer.ViewModel {
     public sealed class DependencyExplorerViewModel : WindowViewModelBase {
-        public DependencyExplorerViewModel(LicenseManager licenseManager, IUIWindowDialogService anUIService, Window window)
+        public DependencyExplorerViewModel(IUIWindowDialogService anUIService, Window window)
             : base(anUIService, window) {
             Assemblies = new ObservableCollection<AssemblyTreeItemViewModel>();
             UIService = anUIService;
-            LicenseManager = licenseManager;
             CreateCommands();
-            window.Loaded += OnWindowLoaded;
         }
-
-        private void OnWindowLoaded(object sender, RoutedEventArgs e) {
-            if (LicenseManager.LicenseInfo.Status == LicenseStatus.NoLicense) {
-                UIService.Show<GetTrialLicenseView>("", Window);
-                UpdateLicenseDependentProperties();
-            }
-        }
-
-        private LicenseManager LicenseManager { get; set; }
 
         private void CreateCommands() {
             SelectFileCommand = new DelegateCommand(
-                canExecute => LicenseManager.LicenseInfo.Status == LicenseStatus.Valid,
                 () => {
                     var dialog = new Microsoft.Win32.OpenFileDialog();
                     var result = dialog.ShowDialog();
@@ -47,19 +30,6 @@ namespace DependencyExplorer.ViewModel {
                         Analyze();
                     }
                 });
-
-            ShowLicenseInfoCommand = new DelegateCommand(
-                canExecute => true,
-                () => {
-                    UIService.ShowLicenseDialog(Resources.LicenseInformationWindowTitle, Window);
-                    UpdateLicenseDependentProperties();
-                });
-        }
-
-        private void UpdateLicenseDependentProperties() {
-            SelectFileCommand.FireCanExecuteChanged();
-            OnPropertyChanged("NoLicenseMessageVisibility");
-            OnPropertyChanged("Title");
         }
 
         private IUIWindowDialogService UIService { get; set; }
@@ -75,15 +45,13 @@ namespace DependencyExplorer.ViewModel {
 
         public ICommand ExitCommand {
             get {
-                return new DelegateCommand(canExecute => true, () => Application.Current.Shutdown());
+                return new DelegateCommand(() => Application.Current.Shutdown());
             }
         }
 
-        public DelegateCommand ShowLicenseInfoCommand { get; private set; }
-
         public DelegateCommand SelectFileCommand { get; private set; }
 
-        public ObservableCollection<AssemblyTreeItemViewModel> Assemblies { get; private set; }
+        public ObservableCollection<AssemblyTreeItemViewModel> Assemblies { get; }
 
         public IEnumerable<AssemblyTreeItemViewModel> AllAnalyzedAssemblies {
             get {
@@ -95,33 +63,7 @@ namespace DependencyExplorer.ViewModel {
             }
         }
 
-        public string Title {
-            get {
-                var appNameWithVersion = String.Format("{0} v.{1}", App.ProductName, App.VersionString);
-                if (LicenseManager.LicenseInfo.Status == LicenseStatus.Valid) {
-                    if (LicenseManager.LicenseInfo.LicenseType == LicenseType.Full) {
-                        return appNameWithVersion;
-                    }
-                    if (LicenseManager.LicenseInfo.LicenseType == LicenseType.Trial) {
-                        var daysTill = (LicenseManager.LicenseInfo.ValidUntil - DateTime.Now).Days;
-                        return appNameWithVersion + String.Format(" TRIAL: {0} day(s) left", daysTill);
-                    }
-                }
-
-                if (LicenseManager.LicenseInfo.Status == LicenseStatus.ExpiredTrial
-                    && LicenseManager.LicenseInfo.LicenseType == LicenseType.Trial) {
-                        return appNameWithVersion + " EXPIRED";
-                }
-                
-                return appNameWithVersion + " UNREGISTERED";
-            }
-        }
-
-        public Visibility NoLicenseMessageVisibility {
-            get {
-                return LicenseManager.LicenseInfo.Status == LicenseStatus.Valid ? Visibility.Collapsed : Visibility.Visible;
-            }
-        }
+        public string Title => $"{App.ProductName} v.{App.VersionString}";
 
         private readonly HashSet<AssemblyTreeItemViewModel> _AnalyzedAssemblies = new HashSet<AssemblyTreeItemViewModel>();
         private readonly HashSet<AssemblyTreeItemViewModel> _NotFoundAssemblies = new HashSet<AssemblyTreeItemViewModel>();
@@ -180,7 +122,7 @@ namespace DependencyExplorer.ViewModel {
             } catch (FileNotFoundException) {
                 MessageBox.Show("File not found. Please select another file to analyze.");
             } catch (Exception ex) {
-                MessageBox.Show(String.Format("Error during loading file you selected. Error text is {0}.", ex.Message));
+                MessageBox.Show($"Error during loading file you selected. Error text is {ex.Message}.");
             }
         }
 

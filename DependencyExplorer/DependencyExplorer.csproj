@@ -62,19 +62,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Helpers\LicenseStatusToBrushConverter.cs" />
     <Compile Include="Infrastructure\ContainerBootstrapper.cs" />
     <Compile Include="Infrastructure\ErrorManager.cs" />
-    <Compile Include="Infrastructure\LicenseManager.cs" />
     <Compile Include="Infrastructure\SoftTinyCoSettings.cs" />
-    <Compile Include="ViewModel\Licensing\EnterLicenseViewModel.cs" />
-    <Compile Include="ViewModel\Licensing\GetTrialLicenseViewModel.cs" />
-    <Compile Include="ViewModel\Licensing\LicenseViewModelBase.cs" />
-    <Compile Include="ViewModel\ViewModelRegistry.cs" />
     <Compile Include="ViewModel\AssemblyTreeItemViewModel.cs" />
     <Compile Include="ViewModel\DependencyExplorerViewModel.cs" />
     <Compile Include="Infrastructure\IUIWindowDialogService.cs" />
-    <Compile Include="ViewModel\Licensing\LicenseInfoViewModel.cs" />
     <Compile Include="Infrastructure\UIWindowDialogService.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -87,15 +80,6 @@
     <Compile Include="ViewModel\WindowViewModelBase.cs" />
     <Compile Include="View\Controls\SendFeedbackUserControl.xaml.cs">
       <DependentUpon>SendFeedbackUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Licensing\EnterLicenseView.xaml.cs">
-      <DependentUpon>EnterLicenseView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Licensing\GetTrialLicenseView.xaml.cs">
-      <DependentUpon>GetTrialLicenseView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Licensing\LicenseInfoView.xaml.cs">
-      <DependentUpon>LicenseInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -139,18 +123,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Licensing\EnterLicenseView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Licensing\GetTrialLicenseView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Licensing\LicenseInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -159,12 +131,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Licensing.Model\Licensing.Model.csproj">
-      <Project>{8599D678-1D9A-4896-9776-A323FB438382}</Project>
-      <Name>Licensing.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AppiconBig.ico" />
